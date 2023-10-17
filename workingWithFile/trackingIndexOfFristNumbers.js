@@ -44,58 +44,105 @@ function analyzeFile(filePath, targetDate) {
     }
   }
 
- 
+  function sortirajObjekatPoVrednostima(obj) {
+    return Object.fromEntries(
+      Object.entries(obj).sort(([, a], [, b]) => b - a)
+    );
+  }
 
+  
 
-function brojanjeISortiranje() {
-    // Spajamo sve listove u jedan veliki niz
-    const listOfNumbers = analyzeFile(filePath, targetDate);
-
-    // Objekat za brojanje ponavljanja brojeva po svakoj iteraciji
-    const brojaciPoIteracijama = [];
-
-    listOfNumbers.forEach((iteracija, index) => {
-        console.log(`Iteracija ${index + 1}:`);
-
-        // Objekat za brojanje ponavljanja brojeva u trenutnoj iteraciji
-        const ukupniBrojac = {};
-
-        // Spajamo sve listove u jedan veliki niz za trenutnu iteraciju
-        const flattenedArray = iteracija.flat();
-
-        // Brojimo ponavljanje svakog broja u trenutnoj iteraciji
-        flattenedArray.forEach((broj) => {
-            ukupniBrojac[broj] = (ukupniBrojac[broj] || 0) + 1;
-        });
-
-        // Sortiramo brojeve za trenutnu iteraciju prema broju ponavljanja
-        const sortiraniBrojevi = Object.entries(ukupniBrojac).sort((a, b) => b[1] - a[1]);
-
-        // Ispisujemo rezultat za trenutnu iteraciju
-        sortiraniBrojevi.forEach(([broj, ponavljanje]) => {
-            // console.log(`${broj}: ${ponavljanje}`);
-        });
-
-        // Dodajemo trenutni brojač u listu brojača po iteracijama
-        brojaciPoIteracijama.push(ukupniBrojac);
+  function brojPojavljivanjaBrojeva(listaIteracija) {
+    const allRoundsMaxNumbers = [];
+  
+    for (const iteracija of listaIteracija) {
+      let brojeviPonavljanje = new Array(48).fill(0);
+  
+      // Prolazak kroz svaki broj u iteraciji i brojanje
+      for (const broj of iteracija) {
+        brojeviPonavljanje[broj - 1]++;
+      }
+  
+      // Sortiranje brojeva po vrednostima
+      const brojeviObjekat = {};
+      brojeviPonavljanje.forEach((broj, index) => {
+        brojeviObjekat[index + 1] = broj;
+      });
+  
+      const sortiraniBrojevi = {};
+      Object.keys(brojeviObjekat).sort((a, b) => brojeviObjekat[b] - brojeviObjekat[a]).forEach(key => {
+        sortiraniBrojevi[key] = brojeviObjekat[key];
+      });
+  
+      allRoundsMaxNumbers.push(sortiraniBrojevi);
+    }
+  
+    return allRoundsMaxNumbers;
+  }
+  
+  function sortirajPoVrednostima(listaObjekata) {
+    return listaObjekata.map(objekat => {
+      const nizParova = Object.entries(objekat);
+      nizParova.sort((a, b) => b[1] - a[1]);
+      const sortiranObjekat = {};
+      for (const [kljuc, vrednost] of nizParova) {
+        sortiranObjekat[kljuc] = vrednost;
+      }
+      return sortiranObjekat;
     });
-
-    // Ispisujemo sve brojače po iteracijama
-    brojaciPoIteracijama.forEach((brojac, index) => {
-        // console.log(`Brojač za iteraciju ${index + 1}:`);
+  }
+  function saberiListe(listaIteracija) {
+    let sumaPoBrojevima = {}; // Inicijalno prazan objekat za čuvanje sume
+    
+    const sveSumiraneListe = []; // Ovde ćemo čuvati sve sumirane liste za svaku iteraciju
+  
+    for (const iteracija of listaIteracija) {
+      // console.log(iteracija)
+      for (const [broj, brojPonavljanja] of Object.entries(iteracija)) {
+        // console.log(broj,brojPonavljanja)
+        sumaPoBrojevima[broj] = (sumaPoBrojevima[broj] || 0) + brojPonavljanja;
+      }
+  
+      // Sortiranje objekta
+      const nizParova = Object.entries(sumaPoBrojevima);
       
+      nizParova.sort((a, b) => b[1] - a[1]);
+      
+      // Kreiranje novog objekta na osnovu sortiranog niza
+      const sortiranObjekat = {};
+  
+      for (const [kljuc, vrednost] of nizParova) {
+        sortiranObjekat[kljuc] = vrednost;
+      }
+  
+      // Dodajemo sortiran objekat u listu sa rezultatima
+      sveSumiraneListe.push(nizParova);
+    }
+  return sveSumiraneListe
+    // Ispisivanje rezultata za svaku iteraciju
+    sveSumiraneListe.forEach((iteracija, index) => {
+      //console.log(`Iteracija ${index + 1}:`, iteracija);
     });
-    console.log(brojaciPoIteracijama);
-}
-
-
+  }
+  
+  function   brojanjeISortiranje(filePath,targetDate) {
+    // const filePath = 'putanja/do/vašeg/fajla.txt'; // Postavite putanju do vašeg fajla
+    const listOfNumbers = analyzeFile(filePath, targetDate);
+    const rezultat = brojPojavljivanjaBrojeva(listOfNumbers);
+   
+    const sortiraniRezultat = sortirajPoVrednostima(rezultat);
+    const listOfEachRound = saberiListe(rezultat)
+    // saberiListe(sortiraniRezultat);
+     console.log(listOfEachRound)
  
+  }
+
 
   
- 
-
   
-  const filePath = 'D:/Djordje.stankovic/BingoTest/output.txt';
+  const filePath = 'C:/Djordje/BingoNajcesciBrojevi-main/BingoNajcesciBrojevi-main/sviBrojevi.txt';
   const targetDate = '17.10.2023.';
-  brojanjeISortiranje()
+  brojanjeISortiranje(filePath,targetDate)
+
+
 
