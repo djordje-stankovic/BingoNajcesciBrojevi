@@ -1,5 +1,45 @@
 import fs from 'fs';
-function analyzeFile(filePath, targetDate) {
+function writeFileAsync(filePath, data) {
+  return new Promise((resolve, reject) => {
+      fs.writeFile(filePath, data, (err) => {
+          if (err) {
+              reject(err);
+          } else {
+              console.log('Podaci su uspešno upisani u fajl.');
+              resolve();
+          }
+      });
+  });
+}
+export async function upisiListeUFajl(liste, filePath) {
+  let data = '';
+
+  liste.forEach((lista, index) => {
+      data += `${index + 1}:[${lista.join(', ')}]\n`;
+  });
+
+  try {
+      await writeFileAsync(filePath, data);
+  } catch (error) {
+      console.error('Greška prilikom upisa u fajl:', error);
+  }
+}
+
+export async function upisiListeListaUFajl(liste, filePath) {
+  let data = '';
+
+  liste.forEach((lista, brojIteracije) => {
+      const formatiranaLista = lista.map(item => `[${item.join(', ')}]`).join(', ');
+      data += `${brojIteracije + 1} : [${formatiranaLista}]\n`;
+  });
+
+  try {
+      await writeFileAsync(filePath, data);
+  } catch (error) {
+      console.error('Greška prilikom upisa u fajl:', error);
+  }
+}
+function getFIle(filePath, targetDate) {
     try {
       // Čitanje sadržaja fajla
       const data = fs.readFileSync(filePath, 'utf8');
@@ -54,7 +94,7 @@ function analyzeFile(filePath, targetDate) {
 
   function brojPojavljivanjaBrojeva(listaIteracija) {
     const allRoundsMaxNumbers = [];
-  
+   
     for (const iteracija of listaIteracija) {
       let brojeviPonavljanje = new Array(48).fill(0);
   
@@ -125,24 +165,70 @@ function analyzeFile(filePath, targetDate) {
     });
   }
   
-  function   brojanjeISortiranje(filePath,targetDate) {
+  export function   brojanjeISortiranje(filePath,targetDate) {
+    let listOfJustNumberAndIndex = [];
     // const filePath = 'putanja/do/vašeg/fajla.txt'; // Postavite putanju do vašeg fajla
-    const listOfNumbers = analyzeFile(filePath, targetDate);
+    const listOfNumbers = getFIle(filePath, targetDate);
     const rezultat = brojPojavljivanjaBrojeva(listOfNumbers);
-   
     const sortiraniRezultat = sortirajPoVrednostima(rezultat);
-    const listOfEachRound = saberiListe(rezultat)
+     const listOfEachRound = saberiListe(rezultat)
     // saberiListe(sortiraniRezultat);
-     console.log(listOfEachRound)
+    listOfEachRound.forEach(row => {
+      const newList = row.map(item => item[0]);
+      listOfJustNumberAndIndex.push(newList)
+    });
+    // console.log(listOfJustNumberAndIndex)
+    const putanjaDoliste = 'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listanajcesceIzvucenihBrojevasortiranaPoBrojuIzvlacenja.txt'; 
+
+    upisiListeUFajl(listOfJustNumberAndIndex, putanjaDoliste);
+    return listOfJustNumberAndIndex
+   
  
   }
 
+  export function getIndexOfFristNumbers(filePath,targetDate,numberOfFristNumbers){
+    let jusIndexesForFristNumbers =[]
+    let fristNumbersAndIndexForDate =[]
+    const listOfNumbersForDay = getFIle(filePath, targetDate);
+    const listOfIndexForDay = brojanjeISortiranje(filePath,targetDate)
+    // console.log(listOfIndexForDay)
+    for (let row =1 ; row < listOfNumbersForDay.length; row++){
+      let fristNumbersAndIndexForRor = []
+      let fristIndexForFristNumbers = []
+      const element = listOfNumbersForDay[row];
+      let fristNumbers = element.slice(0,numberOfFristNumbers)
+      fristNumbers.forEach(number => {
+        let indexOfNumber = -1; // Postavite početnu vrednost na -1
+
+        // Pronalaženje indeksa u listi
+        for (let i = 0; i < listOfIndexForDay[row - 1].length; i++) {
+          
+            if (listOfIndexForDay[row - 1][i] == number) {
+                indexOfNumber = i+1;
+                break; // Prekid kada je broj pronađen
+            }
+        }
+        fristIndexForFristNumbers.push(indexOfNumber)
+        
+        fristNumbersAndIndexForRor.push([number, indexOfNumber]);
+    });
+    jusIndexesForFristNumbers.push(fristIndexForFristNumbers)
+     fristNumbersAndIndexForDate.push(fristNumbersAndIndexForRor)
+    }
+    const putanjaDolisteListe = 'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listaTopBrojevaIInexa.txt'; 
+    const putanjaDolisteJustIndexes = 'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/justIndexOfFristNumbers.txt'; 
+
+    upisiListeUFajl(jusIndexesForFristNumbers, putanjaDolisteJustIndexes);
+    upisiListeListaUFajl(fristNumbersAndIndexForDate,putanjaDolisteListe)
+    // console.log(jusIndexesForFristNumbers)
+    return fristNumbersAndIndexForDate
+  }
 
   
+
+
   
-  const filePath = 'C:/Djordje/BingoNajcesciBrojevi-main/BingoNajcesciBrojevi-main/sviBrojevi.txt';
-  const targetDate = '17.10.2023.';
-  brojanjeISortiranje(filePath,targetDate)
+
 
 
 

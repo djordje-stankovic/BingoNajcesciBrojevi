@@ -140,11 +140,7 @@ export function getTopNumbers() {
     }
 }
 
-function analyzeFile(filePath) {
-    // ... (ostatak koda za analizu fajla)
-    
-    return { results, numbersOrder }; // Povratna vrednost sada uključuje i redosled brojeva
-  }
+
   
   // Funkcija za praćenje frekvencije brojeva
   function trackNumberFrequency(results, numbersOrder) {
