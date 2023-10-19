@@ -5,7 +5,7 @@ function writeFileAsync(filePath, data) {
           if (err) {
               reject(err);
           } else {
-              console.log('Podaci su uspešno upisani u fajl.');
+             // console.log('Podaci su uspešno upisani u fajl.');
               resolve();
           }
       });

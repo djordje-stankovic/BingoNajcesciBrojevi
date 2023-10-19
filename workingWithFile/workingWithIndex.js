@@ -62,7 +62,8 @@ export async function izvuciBrojeveIzFajla(putanjaDoFajla, brojIndexa) {
         numberCounts.sort((a, b) => b.count - a.count);
 
         const numbersOnly = numberCounts.map((entry) => entry.number);
-        const formattedData = numbersOnly.slice(0, brojIndexa).join(',');
+        const formattedData = numbersOnly.slice(0, 10).join(',');
+    
         const indexOfNumbers = formattedData.split(',').map(Number);
         // 
         // console.log(brojevi)
@@ -82,7 +83,7 @@ export async function izvuciBrojeveIzFajla(putanjaDoFajla, brojIndexa) {
         indexOfNumbers.forEach(index => {
             numbersToPlayNext.push(numbersOfIndex[index])
         });
-        console.log(numbersToPlayNext, 'Numbes')
+        // console.log(numbersToPlayNext, 'Numbes')
         //const vrednostiNaIndeksima = formattedData.map((formattedData) => lastMaxNumbersOnIndex[indeks]);
         // const vrednostiNaIndeksima = formattedData.split(',').map((broj) => lastMaxNumbersOnIndex[broj]);
         return numbersToPlayNext.slice(0,brojIndexa);

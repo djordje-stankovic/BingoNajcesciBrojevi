@@ -59,9 +59,9 @@ function writeResultsToFile(results, outputFilePath) {
     }
     
     outputStream.end();
-    console.log('Rezultati su uspešno zapisani u fajl.');
+    // console.log('Rezultati su uspešno zapisani u fajl.');
   } catch (error) {
-    console.error('Došlo je do greške pri pisanju u fajl:', error);
+    // console.error('Došlo je do greške pri pisanju u fajl:', error);
   }
 }
 
@@ -95,12 +95,12 @@ function writeTopNumbersToFile(topNumbersByDate, outputTopNumbersFilePath) {
       }
   
       outputStream.end();
-      console.log('Najčešći brojevi po datumima su uspešno zapisani u fajl.');
+      // console.log('Najčešći brojevi po datumima su uspešno zapisani u fajl.');
     } catch (error) {
-      console.error('Došlo je do greške pri pisanju najčešćih brojeva u fajl:', error);
+      // console.error('Došlo je do greške pri pisanju najčešćih brojeva u fajl:', error);
     }
   }
-export function getTopNumbers() {
+export function getTopNumbers(dateOfDay) {
     const filePath = 'D:/Djordje.stankovic/BingoTest/output.txt'; // Postavite putanju do vašeg fajla
     const analysisResult = analyzeFile(filePath);
   
@@ -117,26 +117,17 @@ export function getTopNumbers() {
         // Prikazivanje top 6 brojeva po datumima
         for (const date in topNumbersByDate) {
           const topNumbers = topNumbersByDate[date];
-          console.log(`Najčešći brojevi za datum ${date}: ${topNumbers.join(', ')}`);
+          // console.log(`Najčešći brojevi za datum ${date}: ${topNumbers.join(', ')}`);
         }
       
         // Pisanje najčešćih brojeva po datumima u poseban fajl
         const outputTopNumbersFilePath = 'najcesci_brojevi.txt';
+     
         writeTopNumbersToFile(topNumbersByDate, outputTopNumbersFilePath);
-        // const git = simpleGit();
-        //         (async () => {
-        //             try {
-        //               await git.add('najcesci_brojevi.txt');
-        //               await git.commit('Dodat novi red unajcesci_brojevi.txt');
-        //               await git.push();
-        //               console.log('Dodao na git');
-        //             } catch (error) {
-        //               console.error('Greška pri slanju na git:', error);
-        //             }
-        //           })()
-      // Dodajte ovde logiku za čitanje rezultata iz fajla i slanje na odgovarajuću lokaciju.
-      // Na primer, možete koristiti FTP biblioteku za slanje rezultata na FTP server.
-      // Takođe, možete koristiti HTTP POST za slanje rezultata na web server.
+        const brojeviZaDatum = topNumbersByDate[dateOfDay];
+
+
+  return brojeviZaDatum
     }
 }
 
@@ -169,7 +160,7 @@ export function getTopNumbers() {
   
   // Funkcija za prikaz rezultata
   function displayResults(leastFrequentNumbers) {
-    console.log(`Najmanje frekventni brojevi za sledeći red: ${leastFrequentNumbers.join(', ')}`);
+    // console.log(`Najmanje frekventni brojevi za sledeći red: ${leastFrequentNumbers.join(', ')}`);
   }
   
   export function getLeastFrequentNumbers(count) {
@@ -177,6 +168,7 @@ export function getTopNumbers() {
     const { results, numbersOrder } = analyzeFile(filePath);
     const numberFrequency = trackNumberFrequency(results, numbersOrder);
     const leastFrequentNumbers = extractLeastFrequentNumbers(numberFrequency, count);
+    // console.log(leastFrequentNumbers,'leastFrequentNumbers')
     displayResults(leastFrequentNumbers);
   }
   
