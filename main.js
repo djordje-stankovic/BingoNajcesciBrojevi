@@ -4,7 +4,7 @@ import {getTopNumbers} from './workingWithFile/topNumbersForDay.js'
 import {brojanjeISortiranje,getIndexOfFristNumbers} from './workingWithFile/trackingIndexOfFristNumbers.js'
 import {izvuciBrojeveIzFajla} from './workingWithFile/workingWithIndex.js'
 import {proveraNajcescihBrojevaZaSveDanePoVremenu,pronadjiBrojeveZaVreme, findMissingNumbers,spojiSveListeIVratiOneKojiSePonavljaju,fristIndexOfDay} from './workingWithTime/workingWithtimeOfpartija.js'
-
+import {getPastWeekdays, groupDatesByWeekday} from './workingWithTime/timeAndDayofPartija.js'
 
 //Vraca Vreme sledece runde 
 function getNextTimeOfRound(){
@@ -79,11 +79,25 @@ const sviBrojeviall = [...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersF
 let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(sviBrojeviall)
 let sviBrojeviallUnqe = new Set(sviBrojeviall);
 
-console.log(listOfPrediction)
-console.log(listOfPredictionall)
+// console.log(listOfPrediction)
+// console.log(listOfPredictionall)
 
 // console.log(sviBrojeviUnqe)
 // console.log(sviBrojeviallUnqe)
+
+const numberOfWeeks = 10;
+const pastWeekdays = getPastWeekdays(numberOfWeeks);
+const groupedDates = groupDatesByWeekday(pastWeekdays);
+
+// Prikazivanje rezultata
+for (const day in groupedDates) {
+  if (groupedDates[day].length > 0) {
+    console.log(`${day} : [${groupedDates[day].join(', ')}]`);
+  }
+}
+
+
+
 
 
 
