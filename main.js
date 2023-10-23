@@ -4,8 +4,9 @@ import {getTopNumbers} from './workingWithFile/topNumbersForDay.js'
 import {brojanjeISortiranje,getIndexOfFristNumbers} from './workingWithFile/trackingIndexOfFristNumbers.js'
 import {izvuciBrojeveIzFajla} from './workingWithFile/workingWithIndex.js'
 import {proveraNajcescihBrojevaZaSveDanePoVremenu,pronadjiBrojeveZaVreme, findMissingNumbers,spojiSveListeIVratiOneKojiSePonavljaju,fristIndexOfDay} from './workingWithTime/workingWithtimeOfpartija.js'
-
-
+import {getPastWeekdays,findLinesInFile,najcesciBrojeeviZaDanIVremeokolo } from './workingWithTime/dayAndTimeOfPartija.js'
+//  import {getPastWeekdays } from './workingWithTime/dayAndTimeOfPartija.js'
+import fs from 'fs';
 //Vraca Vreme sledece runde 
 function getNextTimeOfRound(){
   const now = new Date();
@@ -33,7 +34,7 @@ const userNumbers = [ 2, 39, 8, 10, 20, 27];
 // Proverava dobitak na danasnji dan za kombinaciju
 //checkMoneyStatusFor6NumberForToday(userNumbers);
 
-const filePath = 'd:/Djordje.stankovic/BingoTest/output.txt';
+const filePath = 'C:/Djordje/Bingo/output.txt';
 const targetDate = '19.10.2023.';
 // top Brojevi za svaku partiju za dati datum 
 let listOfIndex = brojanjeISortiranje(filePath,targetDate)
@@ -42,7 +43,8 @@ let listOfIndex = brojanjeISortiranje(filePath,targetDate)
 let indexsOfFristNumbers = await getIndexOfFristNumbers(filePath,targetDate,15)
 
 
-const filePathOfIndex = 'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/justIndexOfFristNumbers.txt'; // Postavite putanju do vašeg fajla
+
+const filePathOfIndex = 'C:/Djordje/BingoNajcesciBrojevi/txtFajls/justIndexOfFristNumbers.txt'; // Postavite putanju do vašeg fajla
 //Vraca Iz Fajla Najcesece inddexe prvih brojeva i za trenutnu listu top brojeva vraca brojeve koji su na top listi najcesce izvucenih indexa
  let numberOfIndexOfFristNumbers = 10;
  let numbersForPlay = await izvuciBrojeveIzFajla(filePathOfIndex,numberOfIndexOfFristNumbers)
@@ -53,39 +55,67 @@ const filePathOfIndex = 'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/just
 
 
 const vreme = getNextTimeOfRound(); // Postavite vreme koje tražite
-let pathToFajlZapartije =  'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/BrojeviPoVremenima/najciseIzvuceniBrojeviZaPartijuPoVremenu.txt'; // Postavite putanju do vašeg fajla
+let pathToFajlZapartije =  'C:/Djordje/BingoNajcesciBrojevi/txtFajls/BrojeviPoVremenima/najciseIzvuceniBrojeviZaPartijuPoVremenu.txt'; // Postavite putanju do vašeg fajla
 //Vraca za vreme partije najcesce izvucene brojeve kroz istoriju
 const brojeviZaPartiju = await pronadjiBrojeveZaVreme(pathToFajlZapartije, vreme,10);
-let putanjaDoSvihIzvlacenja = 'd:/Djordje.stankovic/BingoTest/output.txt'
-let misingNumbers = await findMissingNumbers(putanjaDoSvihIzvlacenja,2)
+let putanjaDoSvihIzvlacenja = 'C:/Djordje/Bingo/output.txt'
+let misingNumbers = await findMissingNumbers(putanjaDoSvihIzvlacenja,3)
 // console.log(brojeviZaPartiju);
 // console.log(misingNumbers);
 //  console.log(numbersForPlay)
 const brojeviZaPartijuBrojevi = brojeviZaPartiju.map(Number);
 let topNumbersOfDay = getTopNumbers(targetDate).slice(0,10)
 // Spajanje svih brojeva u jedan niz
-const sviBrojevi = [...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay];
-let listOfPrediction = spojiSveListeIVratiOneKojiSePonavljaju(sviBrojevi)
 
-let sviBrojeviUnqe = new Set(sviBrojevi);
 
+// let sviBrojeviUnqe = new Set(sviBrojevi);
 
 
 
-let indexPathh = 'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listOfTopIndex.txt'
+
+let indexPathh = 'C:/Djordje/BingoNajcesciBrojevi/txtFajls/listOfTopIndex.txt'
 let indexOfDay = fristIndexOfDay(indexPathh,10)
-const sviBrojeviall = [...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay, ...topNumbersOfDay, ...indexOfDay];
+
+// let sviBrojeviallUnqe = new Set(sviBrojeviall);
+
+
+
+ //console.log(sviBrojeviUnqe)
+ //console.log(sviBrojeviallUnqe)
+
+const numberOfWeeks = 10;
+const pastWeekdays = getPastWeekdays(numberOfWeeks,6,vreme);
+// console.log(pastWeekdays)
+// const groupedDates = groupDatesByWeekday(pastWeekdays);
+
+// Prikazivanje rezultata
+// for (const day in groupedDates) {
+//   if (groupedDates[day].length > 0) {
+//     console.log(`${day} : [${groupedDates[day].join(', ')}]`);
+//   }
+// }
+
+
+const matchingLines = findLinesInFile(putanjaDoSvihIzvlacenja, pastWeekdays);
+
+// Upis rezultata u drugi fajl
+ fs.writeFileSync('./txtFajls/BrojeviPoVremenima/brojeviZaDanVreme5MinPlus.txt', matchingLines.join('\n'));
+
+
+ const brojBrojevaKojeVracam = 10;
+ const topNumbersFromDayAndTime = najcesciBrojeeviZaDanIVremeokolo('./txtFajls/BrojeviPoVremenima/brojeviZaDanVreme5MinPlus.txt',brojBrojevaKojeVracam)
+// console.log(topNumbersFromDayAndTime,'topNumbers')
+
+const sviBrojeviall = [...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay, ...topNumbersOfDay, ...indexOfDay,...topNumbersFromDayAndTime];
 // console.log(sviBrojevi)
-let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(sviBrojeviall)
-let sviBrojeviallUnqe = new Set(sviBrojeviall);
+let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(sviBrojeviall,6)
 
-console.log(listOfPrediction)
-console.log(listOfPredictionall)
+const sviBrojevi = [...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay,...topNumbersFromDayAndTime];
+let listOfPrediction = spojiSveListeIVratiOneKojiSePonavljaju(sviBrojevi,6)
 
-// console.log(sviBrojeviUnqe)
-// console.log(sviBrojeviallUnqe)
-
-
+ console.log(listOfPrediction)
+console.log(listOfPredictionall,'Sa najcesce Izaslim')
+console.log(topNumbersFromDayAndTime,'Za dan i vreme')
 
 
 

@@ -66,7 +66,7 @@ export function proveraNajcescihBrojevaZaSveDanePoVremenu(pathToFile) {
     return `${vreme}: {${formatiraniBrojevi}}`;
   });
 
-  const outputFilePath = 'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/BrojeviPoVremenima/najciseIzvuceniBrojeviZaPartijuPoVremenu.txt';
+  const outputFilePath = 'C:/Djordje/BingoNajcesciBrojevi/txtFajls/BrojeviPoVremenima/najciseIzvuceniBrojeviZaPartijuPoVremenu.txt';
 
   // Upisivanje rezultata u fajl
   fs.writeFile(outputFilePath, formatiraniRezultati.join('\n'), 'utf8', (err) => {
@@ -164,9 +164,10 @@ export async function findMissingNumbers(filePath, brojRedova ) {
   return nedostajuciBrojevi;
 }
 
-export function spojiSveListeIVratiOneKojiSePonavljaju(listOfNumbers){
+export function spojiSveListeIVratiOneKojiSePonavljaju(listOfNumbers,brojBrojevaKojeZelimo){
   const brojeviPonavljanja = {};
 let bigList = []
+let fristNumbers =[]
 // Iterirajte kroz sve brojeve i brojite njihova ponavljanja
 listOfNumbers.forEach((broj) => {
   if (brojeviPonavljanja[broj] === undefined) {
@@ -181,6 +182,12 @@ for (const broj in brojeviPonavljanja) {
   if (brojeviPonavljanja[broj] > 1) {
    bigList.push(broj)
   }
+}
+if (bigList.length > brojBrojevaKojeZelimo){
+   fristNumbers = bigList.slice(0,brojBrojevaKojeZelimo)
+}
+if(fristNumbers.length> 0 ){
+  bigList = fristNumbers
 }
 return bigList
 }

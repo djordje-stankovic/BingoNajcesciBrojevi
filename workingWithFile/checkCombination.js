@@ -12,7 +12,7 @@ function checkUserNumbers(userNumbers, currentNumbers) {
 
 // Funkcija za izvršavanje zadatka
 export function checkMoneyStatusFor6NumberForToday(userNumbers) {
-    const filePath = 'D:/Djordje.stankovic/BingoTest/output.txt';
+    const filePath = 'C:/Djordje/Bingo/output.txt';
     const data = fs.readFileSync(filePath, 'utf8');
     const lines = data.split('\n');
     const currentDate = new Date().toLocaleDateString(); 

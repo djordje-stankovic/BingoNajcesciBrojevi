@@ -69,9 +69,9 @@ export async function izvuciBrojeveIzFajla(putanjaDoFajla, brojIndexa) {
         // console.log(brojevi)
         //  console.log(indexOfNumbers)
 
-        await writeFileAsync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listOfTopIndex.txt', formattedData);
+        await writeFileAsync('C:/Djordje/BingoNajcesciBrojevi/txtFajls/listOfTopIndex.txt', formattedData);
 
-        const secondData = await readFileAsync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listanajcesceIzvucenihBrojevasortiranaPoBrojuIzvlacenja.txt');
+        const secondData = await readFileAsync('C:/Djordje/BingoNajcesciBrojevi/txtFajls/listanajcesceIzvucenihBrojevasortiranaPoBrojuIzvlacenja.txt');
          const lines2 = secondData.split('\n');
         const lastLine = lines2[lines2.length -2];
         let lastMaxNumbersOnIndexRow = lastLine.split(':')
