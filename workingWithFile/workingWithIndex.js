@@ -38,7 +38,7 @@ export async function izvuciBrojeveIzFajla(putanjaDoFajla, brojIndexa) {
         lines.forEach((line, lineNumber) => {
             const parts = line.split(':');
             if (parts.length !== 2) {
-                console.error(`Line ${lineNumber + 1} is not in the expected format. Skipping.`);
+                // console.error(`Line ${lineNumber + 1} is not in the expected format. Skipping.`);
                 return;
             }
 
@@ -69,9 +69,9 @@ export async function izvuciBrojeveIzFajla(putanjaDoFajla, brojIndexa) {
         // console.log(brojevi)
         //  console.log(indexOfNumbers)
 
-        await writeFileAsync('C:/Djordje/BingoNajcesciBrojevi/txtFajls/listOfTopIndex.txt', formattedData);
+        await writeFileAsync('d:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listOfTopIndex.txt', formattedData);
 
-        const secondData = await readFileAsync('C:/Djordje/BingoNajcesciBrojevi/txtFajls/listanajcesceIzvucenihBrojevasortiranaPoBrojuIzvlacenja.txt');
+        const secondData = await readFileAsync('d:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listanajcesceIzvucenihBrojevasortiranaPoBrojuIzvlacenja.txt');
          const lines2 = secondData.split('\n');
         const lastLine = lines2[lines2.length -2];
         let lastMaxNumbersOnIndexRow = lastLine.split(':')

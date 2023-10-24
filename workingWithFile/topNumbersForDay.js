@@ -101,7 +101,7 @@ function writeTopNumbersToFile(topNumbersByDate, outputTopNumbersFilePath) {
     }
   }
 export function getTopNumbers(dateOfDay) {
-    const filePath = 'C:/Djordje/Bingo/output.txt'; // Postavite putanju do vašeg fajla
+    const filePath = 'D:/Djordje.stankovic/BingoTest/output.txt'; // Postavite putanju do vašeg fajla
     const analysisResult = analyzeFile(filePath);
   
     // Postavite putanju do fajla u koji želite da zapišete rezultate
@@ -164,7 +164,7 @@ export function getTopNumbers(dateOfDay) {
   }
   
   export function getLeastFrequentNumbers(count) {
-    const filePath = 'C:/Djordje/Bingo/output.txt';
+    const filePath = 'D:/Djordje.stankovic/BingoTest/output.txt';
     const { results, numbersOrder } = analyzeFile(filePath);
     const numberFrequency = trackNumberFrequency(results, numbersOrder);
     const leastFrequentNumbers = extractLeastFrequentNumbers(numberFrequency, count);

@@ -1,23 +1,31 @@
 import fs from 'fs';
 
-export function getPastWeekdays(numberOfWeeks, targetDay, targetTime) {
-  console.log(targetTime);
+export function getPastWeekdays(numberOfWeeks, targetTime) {
   const weekdays = ['Nedelja', 'Ponedeljak', 'Utorak', 'Sreda', 'Četvrtak', 'Petak', 'Subota'];
   const pastDates = [];
   const targetTimeParts = targetTime.split(':');
   let targetHour = parseInt(targetTimeParts[0], 10);
   let targetMinute = parseInt(targetTimeParts[1], 10);
 
+  // Dodajte ovu liniju kako biste dobili trenutni dan u nedelji
+  const currentDayOfWeek = new Date().getDay();
+
   for (let i = 0; i < numberOfWeeks * 7; i++) {
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() - i);
 
-    // Provera dana u nedelji
+    // Izvući dan u nedelji iz trenutnog datuma
     const dayOfWeek = currentDate.getDay();
-    if (dayOfWeek === targetDay) {
+
+    // Dodajte uslov da se datumi dodaju samo za dane koji odgovaraju trenutnom danu u nedelji
+    if (dayOfWeek === currentDayOfWeek) {
       const formatTime = (hour, minute) => {
-        const formatMinute = String(minute).padStart(2, '0');
-        const formatHour = String(hour).padStart(2, '0');
+        const totalMinutes = hour * 60 + minute;
+        const newHour = Math.floor(totalMinutes / 60);
+        const newMinute = totalMinutes % 60;
+        
+        const formatMinute = String(newMinute).padStart(2, '0');
+        const formatHour = String(newHour).padStart(2, '0');
         return `${formatHour}:${formatMinute}`;
       };
 
@@ -36,10 +44,11 @@ export function getPastWeekdays(numberOfWeeks, targetDay, targetTime) {
       pastDates.push(formattedTimes);
     }
   }
-  console.log(pastDates);
+  //console.log(pastDates);
 
   return pastDates.flat();
 }
+
 
 
 
@@ -129,3 +138,153 @@ export function najcesciBrojeeviZaDanIVremeokolo(filePath, numberOfNumbers) {
       return [];
     }
   }
+  export function getRandomNumbersWithoutRepetition(numbers, count) {
+    if (count > numbers.length) {
+      throw new Error("Count cannot be greater than the length of the array.");
+    }
+  
+    const result = [];
+    const copy = numbers.slice(); // Kopirajte listu da biste je sačuvali netaknutu.
+  
+    for (let i = 0; i < count; i++) {
+      const randomIndex = Math.floor(Math.random() * copy.length);
+      const randomNumber = copy.splice(randomIndex, 1)[0];
+      result.push(randomNumber);
+    }
+  
+    return result.sort((a, b) => a - b);
+  }
+
+  ///Funkcija koja prati brojeve za sledecu partiju
+
+
+
+ 
+  
+  
+  function checkUserNumbers(userNumbers, currentNumbers) {
+    return userNumbers.every(number => currentNumbers.includes(number));
+  }
+//   export function checkMoneyStatusFor6NumbernextGame(userNumbers, otherUserNumbers) {
+//     let currentTime = new Date();
+// console.log(currentTime,'Pokrecem Funkciju');
+//     console.log(userNumbers)
+//     console.log(otherUserNumbers)
+ 
+   
+//       const filePath = 'D:/Djordje.stankovic/BingoTest/output.txt';
+//       const currentDate = new Date().toLocaleDateString();
+//       const valuesList = [0,0,0,0,0, 25000, 15000, 7500, 3000, 1250, 700, 350, 250, 175, 125, 100, 90, 80, 70, 60, 50, 35, 25, 20, 15, 12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
+//       try {
+//         const data = fs.readFileSync(filePath, 'utf8');
+//         const lines = data.split('\n');
+        
+//         // Filtrirajte samo poslednji red
+//         const lastLine = lines.pop(); // Uklonite poslednji red
+  
+//         const parts = lastLine.split(' :,');
+//         const numbersText = parts[0]; // Prvi deo je datum i vreme partije
+//         const numbersPart = parts[1];
+//         const numbers = numbersPart.split(',').map(Number);
+  
+//         const timeMatch = numbersText.match(/\d{1,2}:\d{2}/);
+//         const time = timeMatch ? timeMatch[0] : '';
+  
+//         const areUserNumbersDrawn = checkUserNumbers(userNumbers, numbers);
+//         const areOtherUserNumbersDrawn = checkUserNumbers(otherUserNumbers, numbers);
+  
+//         const lastIndex = userNumbers.map(num => numbers.lastIndexOf(num)).sort((a, b) => b - a)[0];
+//         const otherLastIndex = otherUserNumbers.map(num => numbers.lastIndexOf(num)).sort((a, b) => b - a)[0];
+  
+//         const value = valuesList[lastIndex];
+//         const otherValue = valuesList[otherLastIndex];
+  
+//         const winnings = value !== undefined ? 50 * value - 50 : -50;
+//         const otherWinnings = otherValue !== undefined ? 50 * otherValue - 50 : -50;
+  
+//         const totalLoss = winnings + otherWinnings;
+  
+//         // Kreirajte novu liniju sa podacima
+//         const newLine = `${lastLine}, Prva lista: ${areUserNumbersDrawn ? 'Izasla' : 'Nije izasla'}, Dobitak Prva lista: ${winnings},  Prva lista: ${userNumbers}, Druga lista: ${areOtherUserNumbersDrawn ? 'Izasla' : 'Nije izasla'}, Dobitak Druga lista: ${otherWinnings},  Druga lista: ${otherUserNumbers}, Ukupno stanje: ${totalLoss}`;
+//         currentTime = new Date();
+//         console.log(newLine)
+//         console.log(currentTime,'Upisao u fajl');
+//         // Dodajte novu liniju na kraj fajla
+//         fs.appendFileSync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/pracenjePartije.txt', newLine + '\n', 'utf8');
+//       } catch (err) {
+//         console.error('Došlo je do greške prilikom čitanja datoteke:', err);
+//       }
+   
+//   }
+let totalWinnings = 0;
+export function checkMoneyStatusFor6NumbernextGame(userNumbers, previousWinnings = 0) {
+  let currentTime = new Date();
+  console.log(currentTime, 'Pokrecem Funkciju');
+  console.log(userNumbers);
+
+  const filePath = 'D:/Djordje.stankovic/BingoTest/output.txt';
+  const currentDate = new Date().toLocaleDateString();
+  const valuesList = [0, 0, 0, 0, 0, 25000, 15000, 7500, 3000, 1250, 700, 350, 250, 175, 125, 100, 90, 80, 70, 60, 50, 35, 25, 20, 15, 12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
+
+  try {
+    const data = fs.readFileSync(filePath, 'utf8');
+    const lines = data.split('\n');
+
+    // Filtrirajte samo poslednji red
+    const lastLine = lines.pop(); // Uklonite poslednji red
+
+    const parts = lastLine.split(' :,');
+    const numbersText = parts[0]; // Prvi deo je datum i vreme partije
+    const numbersPart = parts[1];
+    const numbers = numbersPart.split(',').map(Number);
+
+    const timeMatch = numbersText.match(/\d{1,2}:\d{2}/);
+    const time = timeMatch ? timeMatch[0] : '';
+    let missingUserNumbers = [];
+    userNumbers.forEach(numbermising => {
+      if (numbersPart.includes(numbermising)) {
+
+      }
+      else {
+        missingUserNumbers.push(numbermising);
+     }
+    });
+    const areUserNumbersDrawn = checkUserNumbers(userNumbers, numbers);
+    console.log(areUserNumbersDrawn,'function')
+    console.log(missingUserNumbers.length === 0,'mising Numbers')
+    if (missingUserNumbers.length === 0) {
+      // Pronađite indeks poslednjeg izvučenog broja u listi
+      const lastIndex = userNumbers.map(num => numbers.lastIndexOf(num)).sort((a, b) => b - a)[0];
+      console.log(lastIndex, 'lastIn')
+      if (lastIndex !== -1) {
+        const value = valuesList[lastIndex];
+        var winnings = 50 * value - 50;
+      } else {
+        // Ako nijedan od brojeva korisnika nije izvučen, dobitak je -50
+        winnings = -50;
+      }
+    } else {
+      // Ako brojevi nisu izvučeni, dobitak je -50
+      winnings = -50;
+    }
+
+    // Pratite ukupan dobitak tako da ga dodate dobitku iz prethodnih izvođenja
+    totalWinnings += winnings;
+
+    // Odredite brojeve koji nisu izvučeni iz korisničke liste
+    
+
+    // Kreirajte novu liniju sa podacima
+    const newUserLine = `Lista: ${areUserNumbersDrawn ? 'Izasla' : 'Nije izasla'}, Dobitak: ${winnings},  Lista: ${userNumbers}, Brojevi koji nisu izvučeni: [${missingUserNumbers}]`;
+
+    const newLine = `${lastLine}, ${newUserLine}, Ukupno stanje: ${totalWinnings}`;
+    currentTime = new Date();
+
+    // Dodajte novu liniju na kraj fajla
+    fs.appendFileSync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/pracenjePartije.txt', newLine + '\n', 'utf8');
+  } catch (err) {
+    console.error('Došlo je do greške prilikom čitanja datoteke:', err);
+  }
+}
+
+

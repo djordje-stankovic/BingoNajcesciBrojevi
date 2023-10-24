@@ -178,7 +178,7 @@ function getFIle(filePath, targetDate) {
       listOfJustNumberAndIndex.push(newList)
     });
     // console.log(listOfJustNumberAndIndex)
-    const putanjaDoliste = 'C:/Djordje/BingoNajcesciBrojevi/txtFajls/listanajcesceIzvucenihBrojevasortiranaPoBrojuIzvlacenja.txt'; 
+    const putanjaDoliste = 'd:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listanajcesceIzvucenihBrojevasortiranaPoBrojuIzvlacenja.txt'; 
 
     upisiListeUFajl(listOfJustNumberAndIndex, putanjaDoliste);
     return listOfJustNumberAndIndex
@@ -215,8 +215,8 @@ function getFIle(filePath, targetDate) {
     jusIndexesForFristNumbers.push(fristIndexForFristNumbers)
      fristNumbersAndIndexForDate.push(fristNumbersAndIndexForRor)
     }
-    const putanjaDolisteListe = 'C:/Djordje/BingoNajcesciBrojevi/txtFajls/listaTopBrojevaIInexa.txt'; 
-    const putanjaDolisteJustIndexes = 'C:/Djordje/BingoNajcesciBrojevi/txtFajls/justIndexOfFristNumbers.txt'; 
+    const putanjaDolisteListe = 'd:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listaTopBrojevaIInexa.txt'; 
+    const putanjaDolisteJustIndexes = 'd:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/justIndexOfFristNumbers.txt'; 
 
     upisiListeUFajl(jusIndexesForFristNumbers, putanjaDolisteJustIndexes);
     upisiListeListaUFajl(fristNumbersAndIndexForDate,putanjaDolisteListe)

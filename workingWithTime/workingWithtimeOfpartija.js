@@ -66,7 +66,7 @@ export function proveraNajcescihBrojevaZaSveDanePoVremenu(pathToFile) {
     return `${vreme}: {${formatiraniBrojevi}}`;
   });
 
-  const outputFilePath = 'C:/Djordje/BingoNajcesciBrojevi/txtFajls/BrojeviPoVremenima/najciseIzvuceniBrojeviZaPartijuPoVremenu.txt';
+  const outputFilePath = 'd:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/BrojeviPoVremenima/najciseIzvuceniBrojeviZaPartijuPoVremenu.txt';
 
   // Upisivanje rezultata u fajl
   fs.writeFile(outputFilePath, formatiraniRezultati.join('\n'), 'utf8', (err) => {
