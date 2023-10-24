@@ -1,4 +1,5 @@
 import fs from 'fs';
+import simpleGit from 'simple-git'
 
 export function getPastWeekdays(numberOfWeeks, targetTime) {
   const weekdays = ['Nedelja', 'Ponedeljak', 'Utorak', 'Sreda', 'Četvrtak', 'Petak', 'Subota'];
@@ -143,22 +144,39 @@ export function najcesciBrojeeviZaDanIVremeokolo(filePath, numberOfNumbers) {
       throw new Error("Count cannot be greater than the length of the array.");
     }
   
-    const result = [];
-    const copy = numbers.slice(); // Kopirajte listu da biste je sačuvali netaknutu.
+    // Konvertujte sve brojeve u listi u cele brojeve (integers)
+    const integerNumbers = numbers.map((number) => parseInt(number, 10));
   
-    for (let i = 0; i < count; i++) {
-      const randomIndex = Math.floor(Math.random() * copy.length);
-      const randomNumber = copy.splice(randomIndex, 1)[0];
-      result.push(randomNumber);
+    if (count > integerNumbers.length) {
+      throw new Error("Count cannot be greater than the number of available integers.");
     }
   
-    return result.sort((a, b) => a - b);
+    const result = new Set();
+  
+    while (result.size < count) {
+      const randomIndex = Math.floor(Math.random() * integerNumbers.length);
+      const randomNumber = integerNumbers[randomIndex];
+      result.add(randomNumber);
+    }
+  
+    return Array.from(result).sort((a, b) => a - b);
   }
 
   ///Funkcija koja prati brojeve za sledecu partiju
 
 
-
+  function findLargestIndex(userNumbers, numbers) {
+    let largestIndex = -1;
+  
+    for (const number of userNumbers) {
+      const index = numbers.indexOf(number);
+      if (index > largestIndex) {
+        largestIndex = index;
+      }
+    }
+  
+    return largestIndex;
+  }
  
   
   
@@ -241,20 +259,22 @@ export function checkMoneyStatusFor6NumbernextGame(userNumbers, previousWinnings
     const timeMatch = numbersText.match(/\d{1,2}:\d{2}/);
     const time = timeMatch ? timeMatch[0] : '';
     let missingUserNumbers = [];
+    console.log(userNumbers)
     userNumbers.forEach(numbermising => {
       if (numbersPart.includes(numbermising)) {
 
       }
       else {
         missingUserNumbers.push(numbermising);
+        console.log(numbermising)
      }
     });
     const areUserNumbersDrawn = checkUserNumbers(userNumbers, numbers);
     console.log(areUserNumbersDrawn,'function')
-    console.log(missingUserNumbers.length === 0,'mising Numbers')
-    if (missingUserNumbers.length === 0) {
+    console.log(missingUserNumbers.length == 0,'mising Numbers')
+    if (missingUserNumbers.length == 0) {
       // Pronađite indeks poslednjeg izvučenog broja u listi
-      const lastIndex = userNumbers.map(num => numbers.lastIndexOf(num)).sort((a, b) => b - a)[0];
+      const lastIndex = findLargestIndex(userNumbers, numbers);
       console.log(lastIndex, 'lastIn')
       if (lastIndex !== -1) {
         const value = valuesList[lastIndex];
@@ -275,13 +295,24 @@ export function checkMoneyStatusFor6NumbernextGame(userNumbers, previousWinnings
     
 
     // Kreirajte novu liniju sa podacima
-    const newUserLine = `Lista: ${areUserNumbersDrawn ? 'Izasla' : 'Nije izasla'}, Dobitak: ${winnings},  Lista: ${userNumbers}, Brojevi koji nisu izvučeni: [${missingUserNumbers}]`;
+    const newUserLine = `Lista: ${missingUserNumbers.length == 0 ? 'Izasla' : 'Nije izasla'}, Dobitak: ${winnings},  Lista: ${userNumbers}, Brojevi koji nisu izvučeni: [${missingUserNumbers}]`;
 
     const newLine = `${lastLine}, ${newUserLine}, Ukupno stanje: ${totalWinnings}`;
     currentTime = new Date();
 
     // Dodajte novu liniju na kraj fajla
     fs.appendFileSync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/pracenjePartije.txt', newLine + '\n', 'utf8');
+    const git = simpleGit();
+                (async () => {
+                    try {
+                      await git.add('txtFajls/pracenjePartije.txt');
+                      await git.commit('dodataPartija');
+                      await git.push();
+                      console.log('Dodao na git');
+                    } catch (error) {
+                      console.error('Greška pri slanju na git:', error);
+                    }
+                  })()
   } catch (err) {
     console.error('Došlo je do greške prilikom čitanja datoteke:', err);
   }

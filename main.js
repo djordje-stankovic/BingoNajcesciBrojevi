@@ -144,12 +144,12 @@ async function oneBigFunc(){
   
   const sviBrojeviall = [...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay, ...topNumbersOfDay,...topNumbersFromDayAndTime];
   // console.log(sviBrojevi)
-  let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(sviBrojeviall,6)
+  // let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(sviBrojeviall,6)
   
   const sviBrojevi = [...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay,...topNumbersFromDayAndTime];
   let listOfPrediction = spojiSveListeIVratiOneKojiSePonavljaju(sviBrojevi,6)
   
-  
+  let listOfPredictionall = getRandomNumbersWithoutRepetition(sviBrojeviall,6)
   // console.log(getRandomNumbersWithoutRepetition(listOfPredictionall,6))
   // console.log(getRandomNumbersWithoutRepetition(sviBrojevi,6))
   // checkMoneyStatusFor6NumbernextGame(listOfPredictionall,listOfPrediction)
