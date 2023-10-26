@@ -237,11 +237,9 @@ export function najcesciBrojeeviZaDanIVremeokolo(filePath, numberOfNumbers) {
 //       }
    
 //   }
-let totalWinnings = 0;
+let totalWinnings = 3000;
 export function checkMoneyStatusFor6NumbernextGame(userNumbers, previousWinnings = 0) {
   let currentTime = new Date();
-  console.log(currentTime, 'Pokrecem Funkciju');
-  console.log(userNumbers);
 
   const filePath = 'D:/Djordje.stankovic/BingoTest/output.txt';
   const currentDate = new Date().toLocaleDateString();
@@ -262,12 +260,12 @@ export function checkMoneyStatusFor6NumbernextGame(userNumbers, previousWinnings
     const timeMatch = numbersText.match(/\d{1,2}:\d{2}/);
     const time = timeMatch ? timeMatch[0] : '';
     let missingUserNumbers = [];
-    console.log(userNumbers,'userNumbers')
-   
+  
+    let numbersAllAsNumbers = numbersPart
     let userNumbersAsNumber = userNumbers.map(Number)
-    console.log(userNumbersAsNumber,numbersPart)
+    
     userNumbersAsNumber.forEach(numbermising => {
-      if (numbersPart.includes(numbermising)) {
+      if (numbers.includes(numbermising)) {
 console.log(numbermising,'Izaso broj')
       }
       else {
@@ -275,10 +273,9 @@ console.log(numbermising,'Izaso broj')
         console.log(numbermising)
      }
     });
-    console.log(userNumbersAsNumber)
+   
     const areUserNumbersDrawn = checkUserNumbers(userNumbersAsNumber, numbers);
-    console.log(areUserNumbersDrawn,'function')
-    console.log(missingUserNumbers.length == 0,'mising Numbers')
+  
     if (missingUserNumbers.length == 0) {
       // Pronađite indeks poslednjeg izvučenog broja u listi
       const lastIndex = findLargestIndex(userNumbersAsNumber, numbers);

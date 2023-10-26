@@ -164,11 +164,42 @@ export async function findMissingNumbers(filePath, brojRedova ) {
   return nedostajuciBrojevi;
 }
 
-export function spojiSveListeIVratiOneKojiSePonavljaju(listOfNumbers,brojBrojevaKojeZelimo){
+// export function spojiSveListeIVratiOneKojiSePonavljaju(listOfNumbers,brojBrojevaKojeZelimo){
+//   const brojeviPonavljanja = {};
+// let bigList = []
+// let fristNumbers =[]
+
+// // Iterirajte kroz sve brojeve i brojite njihova ponavljanja
+// listOfNumbers.forEach((broj) => {
+//   if (brojeviPonavljanja[broj] === undefined) {
+//     brojeviPonavljanja[broj] = 1;
+//   } else {
+//     brojeviPonavljanja[broj]++;
+//   }
+// });
+
+// console.log(brojeviPonavljanja, 'lista brojeva')
+// const sortedNumbers = Object.entries(brojeviPonavljanja)
+// .sort(([, a], [, b]) => b - a)
+// .map(([broj]) => broj);
+// console.log(sortedNumbers, 'sortedNumbers')
+// //Ovde provera da li ih ima 6.
+// return sortedNumbers.slice(0, brojBrojevaKojeZelimo);
+// }
+
+export function fristIndexOfDay(IndexPath,numbersOfIndex){
+   // Čitanje datoteke
+   const lines = fs.readFileSync(IndexPath, 'utf-8').split('\n');
+  
+   return lines.slice(numbersOfIndex)
+}
+
+////-------...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay,...topNumbersFromDayAndTime
+export function spojiSveListeIVratiOneKojiSePonavljaju(brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,brojBrojevaKojeZelimo){
   const brojeviPonavljanja = {};
 let bigList = []
 let fristNumbers =[]
-
+let listOfNumbers = [...brojeviZaPartijuBrojevi, ...numbersForPlay,...topNumbersFromDayAndTime]
 // Iterirajte kroz sve brojeve i brojite njihova ponavljanja
 listOfNumbers.forEach((broj) => {
   if (brojeviPonavljanja[broj] === undefined) {
@@ -178,17 +209,14 @@ listOfNumbers.forEach((broj) => {
   }
 });
 
-
+console.log(brojeviPonavljanja, 'lista brojeva')
 const sortedNumbers = Object.entries(brojeviPonavljanja)
 .sort(([, a], [, b]) => b - a)
 .map(([broj]) => broj);
 //Ovde provera da li ih ima 6.
+console.log(sortedNumbers)
+sortedNumbers.unshift(...misingNumbers);
 return sortedNumbers.slice(0, brojBrojevaKojeZelimo);
 }
 
-export function fristIndexOfDay(IndexPath,numbersOfIndex){
-   // Čitanje datoteke
-   const lines = fs.readFileSync(IndexPath, 'utf-8').split('\n');
-  
-   return lines.slice(numbersOfIndex)
-}
+
