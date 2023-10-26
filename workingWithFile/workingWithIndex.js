@@ -63,7 +63,6 @@ export async function izvuciBrojeveIzFajla(putanjaDoFajla, brojIndexa) {
 
         const numbersOnly = numberCounts.map((entry) => entry.number);
         const formattedData = numbersOnly.slice(0, 10).join(',');
-    
         const indexOfNumbers = formattedData.split(',').map(Number);
         // 
         // console.log(brojevi)
@@ -74,14 +73,15 @@ export async function izvuciBrojeveIzFajla(putanjaDoFajla, brojIndexa) {
         const secondData = await readFileAsync('d:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listanajcesceIzvucenihBrojevasortiranaPoBrojuIzvlacenja.txt');
          const lines2 = secondData.split('\n');
         const lastLine = lines2[lines2.length -2];
+       
         let lastMaxNumbersOnIndexRow = lastLine.split(':')
         let lastMaxNumbersOnIndex = lastMaxNumbersOnIndexRow[1].replace(/\[|\]/g, '');
         
        
         const numbersOfIndex =  lastMaxNumbersOnIndex.split(',').map(Number);
-        
+       
         indexOfNumbers.forEach(index => {
-            numbersToPlayNext.push(numbersOfIndex[index])
+            numbersToPlayNext.push(numbersOfIndex[index -1])
         });
         // console.log(numbersToPlayNext, 'Numbes')
         //const vrednostiNaIndeksima = formattedData.map((formattedData) => lastMaxNumbersOnIndex[indeks]);

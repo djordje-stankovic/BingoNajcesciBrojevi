@@ -168,6 +168,7 @@ export function spojiSveListeIVratiOneKojiSePonavljaju(listOfNumbers,brojBrojeva
   const brojeviPonavljanja = {};
 let bigList = []
 let fristNumbers =[]
+
 // Iterirajte kroz sve brojeve i brojite njihova ponavljanja
 listOfNumbers.forEach((broj) => {
   if (brojeviPonavljanja[broj] === undefined) {
@@ -177,19 +178,12 @@ listOfNumbers.forEach((broj) => {
   }
 });
 
-// Ispisivanje brojeva i njihovih broja ponavljanja
-for (const broj in brojeviPonavljanja) {
-  if (brojeviPonavljanja[broj] > 1) {
-   bigList.push(broj)
-  }
-}
-if (bigList.length > brojBrojevaKojeZelimo){
-   fristNumbers = bigList.slice(0,brojBrojevaKojeZelimo)
-}
-if(fristNumbers.length> 0 ){
-  bigList = fristNumbers
-}
-return bigList
+
+const sortedNumbers = Object.entries(brojeviPonavljanja)
+.sort(([, a], [, b]) => b - a)
+.map(([broj]) => broj);
+//Ovde provera da li ih ima 6.
+return sortedNumbers.slice(0, brojBrojevaKojeZelimo);
 }
 
 export function fristIndexOfDay(IndexPath,numbersOfIndex){

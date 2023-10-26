@@ -166,10 +166,12 @@ export function najcesciBrojeeviZaDanIVremeokolo(filePath, numberOfNumbers) {
 
 
   function findLargestIndex(userNumbers, numbers) {
+    let listAsNumbers = userNumbers.map(Number)
     let largestIndex = -1;
   
-    for (const number of userNumbers) {
+    for (const number of listAsNumbers) {
       const index = numbers.indexOf(number);
+   
       if (index > largestIndex) {
         largestIndex = index;
       }
@@ -181,6 +183,7 @@ export function najcesciBrojeeviZaDanIVremeokolo(filePath, numberOfNumbers) {
   
   
   function checkUserNumbers(userNumbers, currentNumbers) {
+    
     return userNumbers.every(number => currentNumbers.includes(number));
   }
 //   export function checkMoneyStatusFor6NumbernextGame(userNumbers, otherUserNumbers) {
@@ -259,22 +262,26 @@ export function checkMoneyStatusFor6NumbernextGame(userNumbers, previousWinnings
     const timeMatch = numbersText.match(/\d{1,2}:\d{2}/);
     const time = timeMatch ? timeMatch[0] : '';
     let missingUserNumbers = [];
-    console.log(userNumbers)
-    userNumbers.forEach(numbermising => {
+    console.log(userNumbers,'userNumbers')
+   
+    let userNumbersAsNumber = userNumbers.map(Number)
+    console.log(userNumbersAsNumber,numbersPart)
+    userNumbersAsNumber.forEach(numbermising => {
       if (numbersPart.includes(numbermising)) {
-
+console.log(numbermising,'Izaso broj')
       }
       else {
         missingUserNumbers.push(numbermising);
         console.log(numbermising)
      }
     });
-    const areUserNumbersDrawn = checkUserNumbers(userNumbers, numbers);
+    console.log(userNumbersAsNumber)
+    const areUserNumbersDrawn = checkUserNumbers(userNumbersAsNumber, numbers);
     console.log(areUserNumbersDrawn,'function')
     console.log(missingUserNumbers.length == 0,'mising Numbers')
     if (missingUserNumbers.length == 0) {
       // Pronađite indeks poslednjeg izvučenog broja u listi
-      const lastIndex = findLargestIndex(userNumbers, numbers);
+      const lastIndex = findLargestIndex(userNumbersAsNumber, numbers);
       console.log(lastIndex, 'lastIn')
       if (lastIndex !== -1) {
         const value = valuesList[lastIndex];
@@ -295,17 +302,18 @@ export function checkMoneyStatusFor6NumbernextGame(userNumbers, previousWinnings
     
 
     // Kreirajte novu liniju sa podacima
-    const newUserLine = `Lista: ${missingUserNumbers.length == 0 ? 'Izasla' : 'Nije izasla'}, Dobitak: ${winnings},  Lista: ${userNumbers}, Brojevi koji nisu izvučeni: [${missingUserNumbers}]`;
+    const newUserLine = `Lista: ${missingUserNumbers.length === 0 ? 'Izasla' : 'Nije izasla'}, Dobitak: ${winnings},  Lista: ${userNumbersAsNumber}${missingUserNumbers.length === 0 ? '' : `, Brojevi koji nisu izvučeni: [${missingUserNumbers}]`}`;
+
 
     const newLine = `${lastLine}, ${newUserLine}, Ukupno stanje: ${totalWinnings}`;
     currentTime = new Date();
 
     // Dodajte novu liniju na kraj fajla
-    fs.appendFileSync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/pracenjePartije.txt', newLine + '\n', 'utf8');
+    fs.appendFileSync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/26-10PracenjePartije.txt', newLine + '\n', 'utf8');
     const git = simpleGit();
                 (async () => {
                     try {
-                      await git.add('txtFajls/pracenjePartije.txt');
+                      await git.add('txtFajls/26-10PracenjePartije.txt');
                       await git.commit('dodataPartija');
                       await git.push();
                       console.log('Dodao na git');
