@@ -186,58 +186,46 @@ export function najcesciBrojeeviZaDanIVremeokolo(filePath, numberOfNumbers) {
     
     return userNumbers.every(number => currentNumbers.includes(number));
   }
-//   export function checkMoneyStatusFor6NumbernextGame(userNumbers, otherUserNumbers) {
-//     let currentTime = new Date();
-// console.log(currentTime,'Pokrecem Funkciju');
-//     console.log(userNumbers)
-//     console.log(otherUserNumbers)
- 
-   
-//       const filePath = 'D:/Djordje.stankovic/BingoTest/output.txt';
-//       const currentDate = new Date().toLocaleDateString();
-//       const valuesList = [0,0,0,0,0, 25000, 15000, 7500, 3000, 1250, 700, 350, 250, 175, 125, 100, 90, 80, 70, 60, 50, 35, 25, 20, 15, 12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
-//       try {
-//         const data = fs.readFileSync(filePath, 'utf8');
-//         const lines = data.split('\n');
-        
-//         // Filtrirajte samo poslednji red
-//         const lastLine = lines.pop(); // Uklonite poslednji red
+
+  export function getTopNumberForJustPartijaTime(datumOfPartija, indexOfwantedNumbers = 0) {
+    const listOfNumbers = [];
+    const filePath = 'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/BrojeviPoVremenima/brojeviZaDanVreme5MinPlus.txt';
+    const data = fs.readFileSync(filePath, 'utf8');
+    const lines = data.split('\n');
+    
+    const brojeviPonavljanja = {};
+    let brojac  = 0
+    // Iteriraj kroz linije i broji ponavljanja brojeva
+    lines.forEach(line => {
+      const [datePart, numbersPart] = line.split(' :,');
+      const timePart = datePart.trim().split(' - ');
   
-//         const parts = lastLine.split(' :,');
-//         const numbersText = parts[0]; // Prvi deo je datum i vreme partije
-//         const numbersPart = parts[1];
-//         const numbers = numbersPart.split(',').map(Number);
-  
-//         const timeMatch = numbersText.match(/\d{1,2}:\d{2}/);
-//         const time = timeMatch ? timeMatch[0] : '';
-  
-//         const areUserNumbersDrawn = checkUserNumbers(userNumbers, numbers);
-//         const areOtherUserNumbersDrawn = checkUserNumbers(otherUserNumbers, numbers);
-  
-//         const lastIndex = userNumbers.map(num => numbers.lastIndexOf(num)).sort((a, b) => b - a)[0];
-//         const otherLastIndex = otherUserNumbers.map(num => numbers.lastIndexOf(num)).sort((a, b) => b - a)[0];
-  
-//         const value = valuesList[lastIndex];
-//         const otherValue = valuesList[otherLastIndex];
-  
-//         const winnings = value !== undefined ? 50 * value - 50 : -50;
-//         const otherWinnings = otherValue !== undefined ? 50 * otherValue - 50 : -50;
-  
-//         const totalLoss = winnings + otherWinnings;
-  
-//         // Kreirajte novu liniju sa podacima
-//         const newLine = `${lastLine}, Prva lista: ${areUserNumbersDrawn ? 'Izasla' : 'Nije izasla'}, Dobitak Prva lista: ${winnings},  Prva lista: ${userNumbers}, Druga lista: ${areOtherUserNumbersDrawn ? 'Izasla' : 'Nije izasla'}, Dobitak Druga lista: ${otherWinnings},  Druga lista: ${otherUserNumbers}, Ukupno stanje: ${totalLoss}`;
-//         currentTime = new Date();
-//         console.log(newLine)
-//         console.log(currentTime,'Upisao u fajl');
-//         // Dodajte novu liniju na kraj fajla
-//         fs.appendFileSync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/pracenjePartije.txt', newLine + '\n', 'utf8');
-//       } catch (err) {
-//         console.error('Došlo je do greške prilikom čitanja datoteke:', err);
-//       }
-   
-//   }
-let totalWinnings = 3000;
+      if (timePart[1] == datumOfPartija) {
+        const numbers = numbersPart.split(',').map(Number);
+        console.log(numbers,'Brojevi za vreme ')
+        numbers.forEach(broj => {
+          if (brojeviPonavljanja[broj] === undefined) {
+            brojeviPonavljanja[broj] = 1;
+          } else {
+            brojeviPonavljanja[broj]++;
+          }
+        });
+        brojac = brojac + 1
+      }
+    });
+  console.log(brojeviPonavljanja, 'lista brojeva koji se ponavljaju')
+    // Filtriraj brojeve koji se pojavljuju u svakom redu
+    const brojeviZaPrikaz = Object.keys(brojeviPonavljanja).filter(broj => brojeviPonavljanja[broj] === brojac);
+
+    if (indexOfwantedNumbers !== 0) {
+      return brojeviZaPrikaz.map(Number).slice(0, indexOfwantedNumbers);
+    } else {
+      return brojeviZaPrikaz.map(Number);
+    }
+  }
+
+
+let totalWinnings = -1100;
 export function checkMoneyStatusFor6NumbernextGame(userNumbers, previousWinnings = 0) {
   let currentTime = new Date();
 
@@ -306,11 +294,11 @@ console.log(numbermising,'Izaso broj')
     currentTime = new Date();
 
     // Dodajte novu liniju na kraj fajla
-    fs.appendFileSync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/26-10PracenjePartije.txt', newLine + '\n', 'utf8');
+    fs.appendFileSync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/27-10PracenjePartije.txt', newLine + '\n', 'utf8');
     const git = simpleGit();
                 (async () => {
                     try {
-                      await git.add('txtFajls/26-10PracenjePartije.txt');
+                      await git.add('txtFajls/27-10PracenjePartije.txt');
                       await git.commit('dodataPartija');
                       await git.push();
                       console.log('Dodao na git');

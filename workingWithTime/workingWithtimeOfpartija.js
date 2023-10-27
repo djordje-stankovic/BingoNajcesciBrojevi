@@ -193,30 +193,113 @@ export function fristIndexOfDay(IndexPath,numbersOfIndex){
   
    return lines.slice(numbersOfIndex)
 }
-
+// Sa brojevima koji u kojima se ne pojavljuje 3 broja sa istom bojom 
 ////-------...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay,...topNumbersFromDayAndTime
-export function spojiSveListeIVratiOneKojiSePonavljaju(brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,brojBrojevaKojeZelimo){
-  const brojeviPonavljanja = {};
-let bigList = []
-let fristNumbers =[]
-let listOfNumbers = [...brojeviZaPartijuBrojevi, ...numbersForPlay,...topNumbersFromDayAndTime]
-// Iterirajte kroz sve brojeve i brojite njihova ponavljanja
-listOfNumbers.forEach((broj) => {
-  if (brojeviPonavljanja[broj] === undefined) {
-    brojeviPonavljanja[broj] = 1;
-  } else {
-    brojeviPonavljanja[broj]++;
-  }
-});
+// export function spojiSveListeIVratiOneKojiSePonavljaju(brojeviZaPartijuBrojevi, misingNumbers, numbersForPlay, topNumbersFromDayAndTime, brojBrojevaKojeZelimo, justNumbersOftimeOfPartijaFromHistory) {
+//   const brojeviPonavljanja = {};
+//   let bigList = []
+//   let fristNumbers = []
+//   let listOfNumbers = [...brojeviZaPartijuBrojevi, ...numbersForPlay, ...topNumbersFromDayAndTime, ...justNumbersOftimeOfPartijaFromHistory]
 
-console.log(brojeviPonavljanja, 'lista brojeva')
-const sortedNumbers = Object.entries(brojeviPonavljanja)
-.sort(([, a], [, b]) => b - a)
-.map(([broj]) => broj);
-//Ovde provera da li ih ima 6.
-console.log(sortedNumbers)
-sortedNumbers.unshift(...misingNumbers);
-return sortedNumbers.slice(0, brojBrojevaKojeZelimo);
+//   // Iterirajte kroz sve brojeve i brojite njihova ponavljanja
+//   listOfNumbers.forEach((broj) => {
+//     if (brojeviPonavljanja[broj] === undefined) {
+//       brojeviPonavljanja[broj] = 1;
+//     } else {
+//       brojeviPonavljanja[broj]++;
+//     }
+//   });
+
+//   console.log(misingNumbers, 'mising');
+//   const sortedNumbers = Object.entries(brojeviPonavljanja)
+//     .sort(([, a], [, b]) => b - a)
+//     .map(([broj]) => broj);
+
+//   // Ovde provera da li ih ima 6.
+//   // console.log(sortedNumbers, 'Svi brojevi koji dodju u listama');
+//   const missingNumbersInSorted = misingNumbers.filter(num => !sortedNumbers.includes(num));
+
+//   const numbersToAdd = missingNumbersInSorted.filter(num => !sortedNumbers.includes(num));
+
+//   if (numbersToAdd.length > 0) {
+//     sortedNumbers.unshift(...numbersToAdd);
+//   }
+
+//   // Pravite mapu boja brojeva
+//   const bojeBrojeva = {};
+//   // Definišite boje za brojeve
+//   const boje = {
+//     1: "crvena",
+//     2: "zelena",
+//     3: "plava",
+//     4: "ljubičasta",
+//     5: "braon",
+//     6: "žuta",
+//     7: "narandžasta",
+//     8: "crna"
+//   };
+
+//   // Pravite mapu koja sadrži broj pojavljivanja svake boje
+//   const bojeCount = {};
+
+//   // Proverite boje u nizu `sortedNumbers`
+//   const validNumbers = [];
+//   sortedNumbers.forEach((broj) => {
+//     const bojaBroja = boje[(broj - 1) % 8 + 1];
+//     if (bojaBroja) {
+//       if (bojeCount[bojaBroja] === undefined) {
+//         bojeCount[bojaBroja] = 1;
+//       } else {
+//         bojeCount[bojaBroja]++;
+//       }
+
+//       if (bojeCount[bojaBroja] <= 3) {
+//         validNumbers.push(broj);
+//       }
+//     }
+//   });
+//   console.log(validNumbers ,'Kao validni')
+//   console.log(sortedNumbers, 'koji su sorted' )
+
+//   return validNumbers.slice(0, brojBrojevaKojeZelimo);
+// }
+
+
+//-------...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay,...topNumbersFromDayAndTime
+export function spojiSveListeIVratiOneKojiSePonavljaju(brojeviZaPartijuBrojevi, misingNumbers, numbersForPlay, topNumbersFromDayAndTime, brojBrojevaKojeZelimo, justNumbersOftimeOfPartijaFromHistory) {
+  const brojeviPonavljanja = {};
+  let bigList = []
+  let fristNumbers = []
+  let listOfNumbers = [...brojeviZaPartijuBrojevi, ...numbersForPlay, ...topNumbersFromDayAndTime, ...justNumbersOftimeOfPartijaFromHistory,...misingNumbers]
+
+  // Iterirajte kroz sve brojeve i brojite njihova ponavljanja
+  listOfNumbers.forEach((broj) => {
+    if (brojeviPonavljanja[broj] === undefined) {
+      brojeviPonavljanja[broj] = 1;
+    } else {
+      brojeviPonavljanja[broj]++;
+    }
+  });
+
+  console.log(misingNumbers, 'mising');
+  const sortedNumbers = Object.entries(brojeviPonavljanja)
+    .sort(([, a], [, b]) => b - a)
+    .map(([broj]) => broj);
+console.log(sortedNumbers, 'SortedFromFunction')
+  // Ovde provera da li ih ima 6.
+  // console.log(sortedNumbers, 'Svi brojevi koji dodju u listama');
+  const missingNumbersInSorted = misingNumbers.filter(num => !sortedNumbers.includes(num));
+const numbersToAdd = missingNumbersInSorted.filter(num => !sortedNumbers.includes(num));
+
+if (numbersToAdd.length > 0) {
+
+  //sortedNumbers.unshift(...numbersToAdd);
+ console.log(numbersToAdd)
 }
+return sortedNumbers.slice(0, brojBrojevaKojeZelimo);
+ 
+}
+
+
 
 
