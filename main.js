@@ -10,16 +10,21 @@ import cron from 'node-cron';
 import fs from 'fs';
 //Vraca Vreme sledece runde 
 
-function getTodayDate(){
+function getTodayDate() {
   const today = new Date();
-const day = today.getDate();
-const month = today.getMonth() + 1; // Mjeseci su indeksirani od 0 (januar) do 11 (decembar)
-const year = today.getFullYear();
+  const day = today.getDate();
+  const month = today.getMonth() + 1; // Mjeseci su indeksirani od 0 (januar) do 11 (decembar)
+  const year = today.getFullYear();
 
-// Formatiranje datuma
-const formattedDate = `${day < 10 ? '0' : ''}${day}.${month < 10 ? '0' : ''}${month}.${year}.`;
-return formattedDate
+  // Formatiranje datuma
+  const formattedDay = day < 10 ? day : day.toString();
+  const formattedMonth = month < 10 ? '0' + month : month.toString(); // Promena formata meseca
+
+  const formattedDate = `${formattedDay}.${formattedMonth}.${year}.`;
+
+  return formattedDate;
 }
+
 
 //Vraca 5 min u buducnosti
 function getNextTimeOfRound(){
@@ -124,6 +129,8 @@ async function oneBigFunc(){
   let indexOfDay = fristIndexOfDay(indexPathh,brojBrojevaKojeVracam)
   let topNumbersOfDay = getTopNumbers(targetDate).slice(0,brojeviZaPartijuBrojevi)
   
+  let lastNumbersForDay = getTopNumbers(targetDate).slice(-6)
+  
   // let sviBrojeviallUnqe = new Set(sviBrojeviall);
   
   
@@ -164,15 +171,25 @@ async function oneBigFunc(){
   
   const sviBrojevi = [...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay,...topNumbersFromDayAndTime];
  
-  let justNumbersOftimeOfPartijaFromHistory = getTopNumberForJustPartijaTime(vreme)
+  let justNumbersOftimeOfPartijaFromHistory = getTopNumberForJustPartijaTime(vreme,6)
   // console.log(justNumbersOftimeOfPartijaFromHistory.slice(0,6),'Brojevi koji se ponavljaju u svakoj partiji');
   // let listOfPrediction = spojiSveListeIVratiOneKojiSePonavljaju(sviBrojevi,6)
   
   // let listOfPredictionall = getRandomNumbersWithoutRepetition(sviBrojeviall,6)
-   let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory)
+  
+  //13,8%
+  //let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory)
+  
+  //bez Najcesce Izaslih Brojeva
 
+  // console.log(justNumbersOftimeOfPartijaFromHistory,'Za vreme igranja')
+
+  let colorsOfMostPulledOutBall = getColorForLastGames(putanjaDoSvihIzvlacenja,60)
+
+
+  let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall,brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory)
+  
   console.log(listOfPredictionall.map(Number).sort((a, b) => a - b) ,' koje igram')
-  getColorForLastGames(putanjaDoSvihIzvlacenja,30)
   
   // console.log(justNumbersOftimeOfPartijaFromHistory.slice(0,6),'Brojevi koji se ponavljaju u svakoj partiji');
   // console.log(listOfPrediction.map(Number).sort((a, b) => a - b) ,' koje ne igram')

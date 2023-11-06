@@ -132,7 +132,7 @@ export function najcesciBrojeeviZaDanIVremeokolo(filePath, numberOfNumbers) {
       for (let i = 0; i < numberOfNumbers; i++) {
         numbers.push(Number(sortedNumbers[i]));
       }
-  
+  console.log(numbers)
       return numbers;
     } catch (error) {
       console.error('Greška prilikom čitanja fajla:', error);
@@ -202,7 +202,7 @@ export function najcesciBrojeeviZaDanIVremeokolo(filePath, numberOfNumbers) {
   
       if (timePart[1] == datumOfPartija) {
         const numbers = numbersPart.split(',').map(Number);
-        console.log(numbers,'Brojevi za vreme ')
+        // console.log(numbers,'Brojevi za vreme ')
         numbers.forEach(broj => {
           if (brojeviPonavljanja[broj] === undefined) {
             brojeviPonavljanja[broj] = 1;
@@ -213,7 +213,7 @@ export function najcesciBrojeeviZaDanIVremeokolo(filePath, numberOfNumbers) {
         brojac = brojac + 1
       }
     });
-  console.log(brojeviPonavljanja, 'lista brojeva koji se ponavljaju')
+  // console.log(brojeviPonavljanja, 'lista brojeva koji se ponavljaju')
     // Filtriraj brojeve koji se pojavljuju u svakom redu
     const brojeviZaPrikaz = Object.keys(brojeviPonavljanja).filter(broj => brojeviPonavljanja[broj] === brojac);
 
@@ -225,8 +225,8 @@ export function najcesciBrojeeviZaDanIVremeokolo(filePath, numberOfNumbers) {
   }
 
 
-let totalWinnings = -1100;
-export function checkMoneyStatusFor6NumbernextGame(userNumbers, previousWinnings = 0) {
+let totalWinnings = 0;
+export function checkMoneyStatusFor6NumbernextGame(userNumbers) {
   let currentTime = new Date();
 
   const filePath = 'D:/Djordje.stankovic/BingoTest/output.txt';
@@ -283,6 +283,35 @@ console.log(numbermising,'Izaso broj')
     // Pratite ukupan dobitak tako da ga dodate dobitku iz prethodnih izvođenja
     totalWinnings += winnings;
 
+    // let brojeviZaPartijuBrojeviasNmb = brojeviZaPartijuBrojevi.map(Number)
+    // let misingNumbersasNmb = misingNumbers.map(Number)
+    // let numbersForPlayasNmb = numbersForPlay.map(Number)
+    // let topNumbersFromDayAndTimeasNmb = topNumbersFromDayAndTime.map(Number)
+    // // let justNumbersOftimeOfPartijaFromHistoryasNmb = justNumbersOftimeOfPartijaFromHistory.map(Number)
+    // console.log(justNumbersOftimeOfPartijaFromHistory)
+
+    // missingUserNumbers.forEach(number => {
+    //   brojeviZaPartijuBrojeviasNmb.includes(missingUserNumbers)
+    //   console.log(number,'brojeviZaPartijuBrojeviasNmb')
+    // })
+    // missingUserNumbers.forEach(number => {
+    //   misingNumbersasNmb.includes(missingUserNumbers)
+    //   console.log(number,'misingNumbersasNmb')
+    // })
+    // missingUserNumbers.forEach(number => {
+    //   numbersForPlayasNmb.includes(missingUserNumbers)
+    //   console.log(number,'numbersForPlayasNmb')
+    // })
+    // missingUserNumbers.forEach(number => {
+    //   topNumbersFromDayAndTimeasNmb.includes(missingUserNumbers)
+    //   console.log(number,'topNumbersFromDayAndTimeasNmb')
+    // })
+    // // missingUserNumbers.forEach(number => {
+    // //   justNumbersOftimeOfPartijaFromHistoryasNmb.includes(missingUserNumbers)
+    // //   console.log(number,'justNumbersOftimeOfPartijaFromHistoryasNmb')
+    // // })
+
+
     // Odredite brojeve koji nisu izvučeni iz korisničke liste
     
 
@@ -294,11 +323,11 @@ console.log(numbermising,'Izaso broj')
     currentTime = new Date();
 
     // Dodajte novu liniju na kraj fajla
-    fs.appendFileSync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/27-10PracenjePartije.txt', newLine + '\n', 'utf8');
+    fs.appendFileSync('D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/6-11Pracenje.txt', newLine + '\n', 'utf8');
     const git = simpleGit();
                 (async () => {
                     try {
-                      await git.add('txtFajls/27-10PracenjePartije.txt');
+                      await git.add('txtFajls/6-11Pracenje.txt');
                       await git.commit('dodataPartija');
                       await git.push();
                       console.log('Dodao na git');

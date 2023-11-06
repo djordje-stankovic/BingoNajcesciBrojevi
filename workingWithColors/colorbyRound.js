@@ -15,6 +15,21 @@ const boje = {
   8: "crna"
 };
 
+const bojeasList = [
+  "crvena",
+  "zelena",
+ "plava",
+  "ljubičasta",
+  "braon",
+   "žuta",
+ "narandžasta",
+   "crna"
+];
+
+export function getMostPulledOutColorForLastGames(){
+
+}
+
 
 
 export function getColorForLastGames(filePath, numberOfGames) {
@@ -53,6 +68,30 @@ export function getColorForLastGames(filePath, numberOfGames) {
     // Sada možete koristiti niz "statistics" za dalju obradu ili ga upisati u fajl
     const outputFilePath = 'colorOfLastGames.txt';
     fs.writeFileSync(outputFilePath, formatirajStatistiku(statistics));
+    const totalBojeSum = {};
+
+  statistics.forEach(({ bojeStatistika }) => {
+    bojeStatistika.forEach(({ boja, brojIzaslih }) => {
+      if (totalBojeSum[boja] === undefined) {
+        totalBojeSum[boja] = brojIzaslih;
+      } else {
+        totalBojeSum[boja] += brojIzaslih;
+      }
+    });
+  });
+
+  // Izlogujte sume za sve boje
+  
+    // console.log(totalBojeSum);
+     const najcescaBoja = findColorWithMaxValue(totalBojeSum);
+     console.log(najcescaBoja)
+     const brojeviZaNajcescuBoju = getNumbersForColor( najcescaBoja);
+
+
+// console.log(`Boja sa najvećom vrednošću: ${najcescaBoja}`);
+
+   
+ return brojeviZaNajcescuBoju;
   }
 
   function formatirajStatistiku(statistics) {
@@ -78,4 +117,33 @@ export function getColorForLastGames(filePath, numberOfGames) {
       formatted += '\n';
     });
     return formatted;
+  }
+
+  function findColorWithMaxValue(obj) {
+    let maxColor = null;
+    let maxValue = -Infinity;
+  
+    for (const color in obj) {
+      if (obj[color] > maxValue) {
+        maxColor = color;
+        maxValue = obj[color];
+      }
+    }
+  
+    return maxColor;
+  }
+  function getNumbersForColor(boja) {
+    let number
+    for (let index = 0; index < bojeasList.length; index++) {
+      if (bojeasList[index] == boja){
+        number = index + 1
+      }
+      
+    }
+   
+    const brojeviZaBoju = [];
+    for (let i = number; i <= 48; i += 8) {
+      brojeviZaBoju.push(i);
+    }
+    return brojeviZaBoju;
   }

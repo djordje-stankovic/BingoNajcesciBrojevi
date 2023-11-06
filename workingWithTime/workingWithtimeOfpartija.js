@@ -266,11 +266,11 @@ export function fristIndexOfDay(IndexPath,numbersOfIndex){
 
 
 //-------...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay,...topNumbersFromDayAndTime
-export function spojiSveListeIVratiOneKojiSePonavljaju(brojeviZaPartijuBrojevi, misingNumbers, numbersForPlay, topNumbersFromDayAndTime, brojBrojevaKojeZelimo, justNumbersOftimeOfPartijaFromHistory) {
+export function spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall,brojeviZaPartijuBrojevi, misingNumbers, numbersForPlay, topNumbersFromDayAndTime, brojBrojevaKojeZelimo, justNumbersOftimeOfPartijaFromHistory) {
   const brojeviPonavljanja = {};
   let bigList = []
   let fristNumbers = []
-  let listOfNumbers = [...brojeviZaPartijuBrojevi, ...numbersForPlay, ...topNumbersFromDayAndTime, ...justNumbersOftimeOfPartijaFromHistory,...misingNumbers]
+  let listOfNumbers = [...colorsOfMostPulledOutBall,...brojeviZaPartijuBrojevi, ...numbersForPlay, ...topNumbersFromDayAndTime, ...justNumbersOftimeOfPartijaFromHistory,...misingNumbers]
 
   // Iterirajte kroz sve brojeve i brojite njihova ponavljanja
   listOfNumbers.forEach((broj) => {
@@ -285,9 +285,10 @@ export function spojiSveListeIVratiOneKojiSePonavljaju(brojeviZaPartijuBrojevi, 
   const sortedNumbers = Object.entries(brojeviPonavljanja)
     .sort(([, a], [, b]) => b - a)
     .map(([broj]) => broj);
-console.log(sortedNumbers, 'SortedFromFunction')
+// console.log(sortedNumbers, 'SortedFromFunction')
   // Ovde provera da li ih ima 6.
   // console.log(sortedNumbers, 'Svi brojevi koji dodju u listama');
+  console.log(brojeviPonavljanja,'brojeviPonavljanja')
   const missingNumbersInSorted = misingNumbers.filter(num => !sortedNumbers.includes(num));
 const numbersToAdd = missingNumbersInSorted.filter(num => !sortedNumbers.includes(num));
 
@@ -296,6 +297,8 @@ if (numbersToAdd.length > 0) {
   //sortedNumbers.unshift(...numbersToAdd);
  console.log(numbersToAdd)
 }
+
+
 return sortedNumbers.slice(0, brojBrojevaKojeZelimo);
  
 }

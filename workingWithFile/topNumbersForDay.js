@@ -125,7 +125,8 @@ export function getTopNumbers(dateOfDay) {
      
         writeTopNumbersToFile(topNumbersByDate, outputTopNumbersFilePath);
         const brojeviZaDatum = topNumbersByDate[dateOfDay];
-
+        // console.log(topNumbersByDate)
+        
 
   return brojeviZaDatum
     }
