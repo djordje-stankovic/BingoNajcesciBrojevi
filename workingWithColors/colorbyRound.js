@@ -83,9 +83,9 @@ export function getColorForLastGames(filePath, numberOfGames) {
   // Izlogujte sume za sve boje
   
     // console.log(totalBojeSum);
-     const najcescaBoja = findColorWithMaxValue(totalBojeSum);
-     console.log(najcescaBoja)
-     const brojeviZaNajcescuBoju = getNumbersForColor( najcescaBoja);
+     const najredjaBoja = findColorWithMinValue(totalBojeSum);
+     console.log(najredjaBoja)
+     const brojeviZaNajcescuBoju = getNumbersForColor( najredjaBoja);
 
 
 // console.log(`Boja sa najvećom vrednošću: ${najcescaBoja}`);
@@ -119,18 +119,18 @@ export function getColorForLastGames(filePath, numberOfGames) {
     return formatted;
   }
 
-  function findColorWithMaxValue(obj) {
-    let maxColor = null;
-    let maxValue = -Infinity;
-  
+  function findColorWithMinValue(obj) {
+    let minColor = null;
+    let minValue = Infinity;
+    
     for (const color in obj) {
-      if (obj[color] > maxValue) {
-        maxColor = color;
-        maxValue = obj[color];
+      if (obj[color] < minValue) {
+        minColor = color;
+        minValue = obj[color];
       }
     }
-  
-    return maxColor;
+    
+    return minColor;
   }
   function getNumbersForColor(boja) {
     let number

@@ -299,10 +299,122 @@ if (numbersToAdd.length > 0) {
 }
 
 
-return sortedNumbers.slice(0, brojBrojevaKojeZelimo);
+return sortedNumbers
+// return sortedNumbers.slice(0, brojBrojevaKojeZelimo);
  
 }
 
+
+
+
+
+
+////////////////////////////--Brojevi koji se ne pojavljuju////////
+export async function findNumbersInEachRow(filePath, brojRedova ) {
+  // Lista za čuvanje brojeva koji su izasli u svakom redu
+  const brojeviPoRedovima = [];
+
+  // Čitanje datoteke
+  const lines = fs.readFileSync(filePath, 'utf-8').split('\n');
+
+  // Odabir poslednjih "brojRedova" redova
+  const poslednjiRedovi = lines.slice(-brojRedova);
+
+  // Iterirajte kroz svaki red
+  poslednjiRedovi.forEach((red) => {
+    // Proverite da li red sadrži " :,"
+    if (red.includes(" :,")) {
+      // Izdvojite brojeve iz reda
+      const brojeviIzReda = red.split(' :,')[1].split(',').map(Number);
+
+      // Dodajte izdvojene brojeve u listu brojeva po redu
+      brojeviPoRedovima.push(brojeviIzReda);
+    }
+  });
+  const zajednickiBrojevi = findCommonNumbers(brojeviPoRedovima);
+
+  return zajednickiBrojevi;
+}
+
+
+function findCommonNumbers(lists) {
+  // Prva lista brojeva
+  const firstList = lists[0];
+
+  // Filtriranje brojeva koji se javljaju u svakoj listi
+  const zajednickiBrojevi = firstList.filter((broj) => {
+    return lists.every((lista) => lista.includes(broj));
+  });
+
+  return zajednickiBrojevi;
+}
+
+
+
+//////////////////////////Min brojevi Za igranje 
+
+export function spojiSveListeIVratiOneKojiSePonavljajuZaNeIgranje(listOfNumbers,numberOfNumbers) {
+  const brojeviPonavljanja = {};
+  // let bigList = []
+  // let fristNumbers = []
+  // let listOfNumbers = [...colorsOfMostPulledOutBall,...brojeviZaPartijuBrojevi, ...numbersForPlay, ...topNumbersFromDayAndTime, ...justNumbersOftimeOfPartijaFromHistory,...misingNumbers]
+
+  // Iterirajte kroz sve brojeve i brojite njihova ponavljanja
+  listOfNumbers.forEach((broj) => {
+    if (brojeviPonavljanja[broj] === undefined) {
+      brojeviPonavljanja[broj] = 1;
+    } else {
+      brojeviPonavljanja[broj]++;
+    }
+  });
+
+  const sortedNumbers = Object.entries(brojeviPonavljanja)
+    .sort(([, a], [, b]) => b - a)
+    .map(([broj]) => broj);
+// console.log(sortedNumbers, 'SortedFromFunction')
+  // Ovde provera da li ih ima 6.
+  // console.log(sortedNumbers, 'Svi brojevi koji dodju u listama');
+ 
+
+
+return sortedNumbers.slice(0, numberOfNumbers);
+ 
+}
+
+export function removeLastFromListOfPrediction(list) {
+  // Čitanje datoteke
+  let filePath = 'D:/Djordje.stankovic/BingoNajcesciBrojevi/najcesci_brojevi.txt';
+  const lines = fs.readFileSync(filePath, 'utf-8').split('\n');
+  let lastNumbers = [];
+
+  // Iteriranje unazad kroz redove
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const red = lines[i].trim(); // Uklonite prazne znakove sa početka i kraja reda
+
+    // Provera da li je red prazan
+    if (red !== '') {
+      const splitParts = red.split('.: ');
+      if (splitParts.length >= 2) {
+        const brojeviIzReda = splitParts[1].split(',').map(Number);
+        lastNumbers.push(...brojeviIzReda);
+        break; // Prekida petlju kada pronađe prvi red koji nije prazan
+      } else {
+     
+      }
+    }
+  }
+  
+  let justLastNumbers = lastNumbers.slice(-9);
+  
+
+  list = list.map(Number); // Konvertujte sve brojeve iz stringova u brojeve
+  list = list.filter((broj) => !justLastNumbers.includes(broj));
+
+  // Vraćanje samo prvih 6 brojeva
+  list = list.slice(0, 6);
+
+  return list;
+}
 
 
 
