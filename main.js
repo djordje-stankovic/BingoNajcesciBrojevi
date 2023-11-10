@@ -214,7 +214,7 @@ let brojlopticaKojiSeNajviseJAvljaju = 20;
 
   //let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall,brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory,6)
   
-  let listPrvihKOjiBitrebliDaSeIgraju = spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall,brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory,brojlopticaKojiSeNajviseJAvljaju)
+  let listPrvihKOjiBitrebliDaSeIgraju = spojiSveListeIVratiOneKojiSePonavljaju([],brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory,brojlopticaKojiSeNajviseJAvljaju)
 
 
   // console.log(listOfPredictionall ,'koje vrati lista')
