@@ -266,42 +266,118 @@ export function fristIndexOfDay(IndexPath,numbersOfIndex){
 
 
 //-------...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay,...topNumbersFromDayAndTime
-export function spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall,brojeviZaPartijuBrojevi, misingNumbers, numbersForPlay, topNumbersFromDayAndTime, brojBrojevaKojeZelimo, justNumbersOftimeOfPartijaFromHistory) {
+// export function spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall,brojeviZaPartijuBrojevi, misingNumbers, numbersForPlay, topNumbersFromDayAndTime, brojBrojevaKojeZelimo, justNumbersOftimeOfPartijaFromHistory,brojlopticaKojiSeNajviseJAvljaju) {
+//   const brojeviPonavljanja = {};
+//   let bigList = []
+//   let fristNumbers = []
+//   let listOfNumbers = [...colorsOfMostPulledOutBall,...brojeviZaPartijuBrojevi, ...numbersForPlay, ...topNumbersFromDayAndTime, ...justNumbersOftimeOfPartijaFromHistory,...misingNumbers]
+
+//   // Iterirajte kroz sve brojeve i brojite njihova ponavljanja
+//   listOfNumbers.forEach((broj) => {
+//     if (brojeviPonavljanja[broj] === undefined) {
+//       brojeviPonavljanja[broj] = 1;
+//     } else {
+//       brojeviPonavljanja[broj]++;
+//     }
+//   });
+
+//   console.log(brojeviPonavljanja, 'brojeviPonavljanja');
+//   const sortedNumbers = Object.entries(brojeviPonavljanja)
+//     .sort(([, a], [, b]) => b - a)
+//     .map(([broj]) => broj);
+// // console.log(sortedNumbers, 'SortedFromFunction')
+//   // Ovde provera da li ih ima 6.
+//   // console.log(sortedNumbers, 'Svi brojevi koji dodju u listama');
+//   // console.log(brojeviPonavljanja,'brojeviPonavljanja')
+//   const missingNumbersInSorted = misingNumbers.filter(num => !sortedNumbers.includes(num));
+// const numbersToAdd = missingNumbersInSorted.filter(num => !sortedNumbers.includes(num));
+
+// if (numbersToAdd.length > 0) {
+
+//   //sortedNumbers.unshift(...numbersToAdd);
+// //  console.log(numbersToAdd)
+// }
+
+
+// return sortedNumbers
+// // return sortedNumbers.slice(0, brojBrojevaKojeZelimo);
+ 
+// }
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+export function spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall, brojeviZaPartijuBrojevi, misingNumbers, numbersForPlay, topNumbersFromDayAndTime, brojBrojevaKojeZelimo, justNumbersOftimeOfPartijaFromHistory, brojlopticaKojiSeNajviseJAvljaju) {
   const brojeviPonavljanja = {};
   let bigList = []
   let fristNumbers = []
-  let listOfNumbers = [...colorsOfMostPulledOutBall,...brojeviZaPartijuBrojevi, ...numbersForPlay, ...topNumbersFromDayAndTime, ...justNumbersOftimeOfPartijaFromHistory,...misingNumbers]
+  let listOfNumbers = [...colorsOfMostPulledOutBall, ...brojeviZaPartijuBrojevi, ...numbersForPlay, ...topNumbersFromDayAndTime, ...justNumbersOftimeOfPartijaFromHistory, ...misingNumbers]
 
-  // Iterirajte kroz sve brojeve i brojite njihova ponavljanja
+  // Iteriraj kroz sve brojeve i brojite njihova ponavljanja
   listOfNumbers.forEach((broj) => {
-    if (brojeviPonavljanja[broj] === undefined) {
-      brojeviPonavljanja[broj] = 1;
-    } else {
-      brojeviPonavljanja[broj]++;
-    }
+      if (brojeviPonavljanja[broj] === undefined) {
+          brojeviPonavljanja[broj] = 1;
+      } else {
+          brojeviPonavljanja[broj]++;
+      }
   });
-
-  console.log(misingNumbers, 'mising');
+  
+  console.log(listOfNumbers, 'list of numbers')
+  listOfNumbers.map(Number)
+  console.log(listOfNumbers, 'list of numbers as numbers')
+  // Sortiraj brojeve prema ponavljanju
   const sortedNumbers = Object.entries(brojeviPonavljanja)
-    .sort(([, a], [, b]) => b - a)
-    .map(([broj]) => broj);
-// console.log(sortedNumbers, 'SortedFromFunction')
-  // Ovde provera da li ih ima 6.
-  // console.log(sortedNumbers, 'Svi brojevi koji dodju u listama');
-  console.log(brojeviPonavljanja,'brojeviPonavljanja')
-  const missingNumbersInSorted = misingNumbers.filter(num => !sortedNumbers.includes(num));
-const numbersToAdd = missingNumbersInSorted.filter(num => !sortedNumbers.includes(num));
+      .sort(([, a], [, b]) => b - a)
+      .map(([broj]) => broj);
+console.log(misingNumbers)
+  // Dodaj nedostajuće brojeve
+  // const missingNumbersInSorted = misingNumbers.filter(num => !sortedNumbers.includes(num));
+  // const numbersToAdd = missingNumbersInSorted.filter(num => !sortedNumbers.includes(num));
 
-if (numbersToAdd.length > 0) {
+  // if (numbersToAdd.length > 0) {
+  //     sortedNumbers.unshift(...numbersToAdd);
+  // }
 
-  //sortedNumbers.unshift(...numbersToAdd);
- console.log(numbersToAdd)
+  // Formiraj listu prema broju loptica koje se najviše javljaju
+  const finalList = [];
+
+    const addedNumbers = new Set();
+// Pronađi maksimalnu vrednost iz brojeviPonavljanja
+const maxCount = Math.max(...Object.values(brojeviPonavljanja));
+
+// Dodaj brojeve prema maksimalnoj vrednosti
+for (let i = maxCount; i > 1; i--) {
+  const numbersWithCount = sortedNumbers.filter(num => brojeviPonavljanja[num] === i && !addedNumbers.has(num));
+  if (numbersWithCount.length > 0) {
+    // Ako ima više od jednog broja sa istim brojem ponavljanja,
+    // njihov redosled se nasumicno menja pre dodavanja u finalList
+    if (numbersWithCount.length > 1) {
+      shuffleArray(numbersWithCount);
+    }
+    finalList.push(...numbersWithCount);
+    numbersWithCount.forEach(num => addedNumbers.add(num));
+  }
+}
+
+console.log(brojeviPonavljanja)
+// Dodaj brojeve sa vrednošću 1 u random redosledu
+const numbersWithValueOne = Object.keys(brojeviPonavljanja).filter(num => brojeviPonavljanja[num] === 1 && !addedNumbers.has(num));
+
+while (numbersWithValueOne.length > 0) {
+    const randomIndex = Math.floor(Math.random() * numbersWithValueOne.length);
+    const selectedNumber = numbersWithValueOne[randomIndex];
+    finalList.push(selectedNumber);
+    addedNumbers.add(selectedNumber);
+    numbersWithValueOne.splice(randomIndex, 1);
 }
 
 
-return sortedNumbers
-// return sortedNumbers.slice(0, brojBrojevaKojeZelimo);
- 
+  return finalList.slice(0, brojlopticaKojiSeNajviseJAvljaju);
 }
 
 
@@ -403,13 +479,9 @@ export function removeLastFromListOfPrediction(list) {
       }
     }
   }
-  
-  let justLastNumbers = lastNumbers.slice(-9);
-  
-
+  let justLastNumbers = lastNumbers.slice(-7);
   list = list.map(Number); // Konvertujte sve brojeve iz stringova u brojeve
   list = list.filter((broj) => !justLastNumbers.includes(broj));
-
   // Vraćanje samo prvih 6 brojeva
   list = list.slice(0, 6);
 

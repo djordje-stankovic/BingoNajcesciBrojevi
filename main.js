@@ -9,9 +9,25 @@ import {getPastWeekdays,findLinesInFile,najcesciBrojeeviZaDanIVremeokolo,getRand
 import cron from 'node-cron';
 import fs from 'fs';
 import simpleGit from 'simple-git'
+import crypto from 'crypto'
+
 //Vraca Vreme sledece runde 
 
 
+function generateUniqueRandomNumbers(min, max, count) {
+  if (count > max - min + 1) {
+    throw new Error('Nemoguće generisati toliko jedinstvenih brojeva.');
+  }
+
+  const uniqueNumbers = new Set();
+
+  while (uniqueNumbers.size < count) {
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    uniqueNumbers.add(randomNumber);
+  }
+
+  return Array.from(uniqueNumbers);
+}
 
 function getTodayDate() {
   const today = new Date();
@@ -129,7 +145,7 @@ async function oneBigFunc(){
   
   
   
-  const brojBrojevaKojeVracam = 13;
+  const brojBrojevaKojeVracam = 10;
   let indexPathh = 'd:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/listOfTopIndex.txt'
   let indexOfDay = fristIndexOfDay(indexPathh,brojBrojevaKojeVracam)
   let topNumbersOfDay = getTopNumbers(targetDate).slice(0,brojeviZaPartijuBrojevi)
@@ -179,7 +195,7 @@ async function oneBigFunc(){
   
   const sviBrojevi = [...brojeviZaPartijuBrojevi, ...misingNumbers, ...numbersForPlay,...topNumbersFromDayAndTime];
  
-  let justNumbersOftimeOfPartijaFromHistory = getTopNumberForJustPartijaTime(vreme,13)
+  let justNumbersOftimeOfPartijaFromHistory = getTopNumberForJustPartijaTime(vreme,10)
   // console.log(justNumbersOftimeOfPartijaFromHistory.slice(0,6),'Brojevi koji se ponavljaju u svakoj partiji');
   // let listOfPrediction = spojiSveListeIVratiOneKojiSePonavljaju(sviBrojevi,6)
   
@@ -191,16 +207,19 @@ async function oneBigFunc(){
   //bez Najcesce Izaslih Brojeva
 
   // console.log(justNumbersOftimeOfPartijaFromHistory,'Za vreme igranja')
-
+let brojlopticaKojiSeNajviseJAvljaju = 20;
   let colorsOfMostPulledOutBall = getColorForLastGames(putanjaDoSvihIzvlacenja,3)
 
   // let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall,brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory).slice(0,6)
 
-  let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju([],brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory).slice(0,6)
+  //let listOfPredictionall = spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall,brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory,6)
   
-  let listPrvihKOjiBitrebliDaSeIgraju = spojiSveListeIVratiOneKojiSePonavljaju([],brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory).slice(0,20)
+  let listPrvihKOjiBitrebliDaSeIgraju = spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall,brojeviZaPartijuBrojevi,misingNumbers,numbersForPlay,topNumbersFromDayAndTime,6,justNumbersOftimeOfPartijaFromHistory,brojlopticaKojiSeNajviseJAvljaju)
 
-  console.log(listOfPredictionall.map(Number).sort((a, b) => a - b) ,' koje igram')
+
+  // console.log(listOfPredictionall ,'koje vrati lista')
+
+   console.log(listPrvihKOjiBitrebliDaSeIgraju ,'od kojih se biraju')
   
 
 
@@ -215,20 +234,22 @@ async function oneBigFunc(){
   //  console.log(brojeviZaPartijuPlusMinusPet, 'Koji ne izlaze filtrirani')
    let brojeviKojiSeJavljajuUPoslednjimRedovima = await findNumbersInEachRow(putanjaDoSvihIzvlacenja,8)
 
-  let sviBZaNeIgranje = [...brojeviKojiNajredjeIzlaze,...brojeviZaPartijuPlusMinusPet,...brojeviKojiSeJavljajuUPoslednjimRedovima]
-   let brojeviKOjiNeBiTrebaloDaIzadju = spojiSveListeIVratiOneKojiSePonavljajuZaNeIgranje(sviBZaNeIgranje,6)
+  // let sviBZaNeIgranje = [...brojeviKojiNajredjeIzlaze,...brojeviZaPartijuPlusMinusPet,...brojeviKojiSeJavljajuUPoslednjimRedovima]
+  //  let brojeviKOjiNeBiTrebaloDaIzadju = spojiSveListeIVratiOneKojiSePonavljajuZaNeIgranje(sviBZaNeIgranje,6)
     console.log(listaNajcesceIzaslihBezNajredjeIzvucenihZaDanas.map(Number).sort((a, b) => a - b),'Koji  bi cesce trebalo da izadju')
  
-
+    const randomNumbers = generateUniqueRandomNumbers(1, 48, 6);
+    console.log(randomNumbers.map(Number).sort((a, b) => a - b), 'randomNumbers');
 
   setTimeout(() => {
-     checkMoneyStatusFor6NumbernextGame(listOfPredictionall.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/8-11Pracenje.txt');
-      checkMoneyStatusFor6NumbernextGame(listaNajcesceIzaslihBezNajredjeIzvucenihZaDanas.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/8-11PracenjeBezPoslednjih.txt');
-     const git = simpleGit();
+      checkMoneyStatusFor6NumbernextGame(listaNajcesceIzaslihBezNajredjeIzvucenihZaDanas.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/10-11PracenjeDodatRandom.txt');
+      checkMoneyStatusFor6NumbernextGame(randomNumbers.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/9-11PracenjeRandom.txt');
+     
+      const git = simpleGit();
      (async () => {
          try {
-           await git.add('txtFajls/8-11Pracenje.txt');
-            await git.add('txtFajls/8-11PracenjeBezPoslednjih.txt');
+           await git.add('txtFajls/9-11PracenjeRandom.txt');
+            await git.add('txtFajls/10-11PracenjeDodatRandom.txt');
            await git.commit('dodataPartija');
            await git.push();
            console.log('Dodao na git');
