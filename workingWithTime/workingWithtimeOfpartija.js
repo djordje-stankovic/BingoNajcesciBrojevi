@@ -494,7 +494,7 @@ export function removeLastFromListOfPrediction(list,listaZaUporedjivanje) {
   // Logovanje zajedničkih brojeva
   console.log(zajednickiBrojevi, 'Zajednički brojevi');
   const randomSix = getRandomNumbers(zajednickiBrojevi,6)
-  console.log(randomSix, '6 iz liste Random')
+  // console.log(randomSix, '6 iz liste Random')
 
 
   // Vraćanje samo prvih 6 brojeva

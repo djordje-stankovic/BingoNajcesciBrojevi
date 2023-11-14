@@ -6,6 +6,8 @@ import {izvuciBrojeveIzFajla} from './workingWithFile/workingWithIndex.js'
 import {proveraNajcescihBrojevaZaSveDanePoVremenu,pronadjiBrojeveZaVreme, findMissingNumbers,spojiSveListeIVratiOneKojiSePonavljaju,fristIndexOfDay,findNumbersInEachRow,spojiSveListeIVratiOneKojiSePonavljajuZaNeIgranje,removeLastFromListOfPrediction,allWithIncrisedIndex} from './workingWithTime/workingWithtimeOfpartija.js'
 import {getPastWeekdays,findLinesInFile,najcesciBrojeeviZaDanIVremeokolo,getRandomNumbersWithoutRepetition,checkMoneyStatusFor6NumbernextGame,getTopNumberForJustPartijaTime,najredjiBrojeeviZaDanIVremeokolo,getnumbersForNotPlayForJustPartijaTime } from './workingWithTime/dayAndTimeOfPartija.js'
   import {getColorForLastGames } from './workingWithColors/colorbyRound.js'
+
+  import { PlayCombination } from './index.js'
 import cron from 'node-cron';
 import fs from 'fs';
 import simpleGit from 'simple-git'
@@ -244,11 +246,15 @@ let brojlopticaKojiSeNajviseJAvljaju = 20;
   // console.log("Rezultat:", rezultat);
   console.log(randomSix.map(Number).sort((a, b) => a - b),'random 6 iz liste izlazecih')
     console.log(listaNajcesceIzaslihBezNajredjeIzvucenihZaDanas.map(Number).sort((a, b) => a - b),'Koji  bi cesce trebalo da izadju')
- 
+    PlayCombination(randomSix);
   
   setTimeout(() => {
       checkMoneyStatusFor6NumbernextGame(listaNajcesceIzaslihBezNajredjeIzvucenihZaDanas.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/14-11Pracenje.txt');
-      checkMoneyStatusFor6NumbernextGame(randomSix.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/14-11PracenjeRandomSix.txt');
+      
+      if(randomSix.length = 6){
+        checkMoneyStatusFor6NumbernextGame(randomSix.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/14-11PracenjeRandomSix.txt');
+
+      }
      
       const git = simpleGit();
      (async () => {
