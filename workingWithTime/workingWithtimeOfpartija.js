@@ -314,6 +314,7 @@ function shuffleArray(array) {
 
 export function spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall, brojeviZaPartijuBrojevi, misingNumbers, numbersForPlay, topNumbersFromDayAndTime, brojBrojevaKojeZelimo, justNumbersOftimeOfPartijaFromHistory, brojlopticaKojiSeNajviseJAvljaju) {
   const brojeviPonavljanja = {};
+  console.log(colorsOfMostPulledOutBall, 'Rezultat ponavljanja 3')
   let bigList = []
   let fristNumbers = []
   let listOfNumbers = [...colorsOfMostPulledOutBall, ...brojeviZaPartijuBrojevi, ...numbersForPlay, ...topNumbersFromDayAndTime, ...justNumbersOftimeOfPartijaFromHistory, ...misingNumbers]
@@ -327,9 +328,9 @@ export function spojiSveListeIVratiOneKojiSePonavljaju(colorsOfMostPulledOutBall
       }
   });
   
-  console.log(listOfNumbers, 'list of numbers')
-  listOfNumbers.map(Number)
-  console.log(listOfNumbers, 'list of numbers as numbers')
+  // console.log(listOfNumbers, 'list of numbers')
+  // listOfNumbers.map(Number)
+  // console.log(listOfNumbers, 'list of numbers as numbers')
   // Sortiraj brojeve prema ponavljanju
   const sortedNumbers = Object.entries(brojeviPonavljanja)
       .sort(([, a], [, b]) => b - a)
@@ -457,7 +458,7 @@ return sortedNumbers.slice(0, numberOfNumbers);
  
 }
 
-export function removeLastFromListOfPrediction(list) {
+export function removeLastFromListOfPrediction(list,listaZaUporedjivanje) {
   // Čitanje datoteke
   let filePath = 'D:/Djordje.stankovic/BingoNajcesciBrojevi/najcesci_brojevi.txt';
   const lines = fs.readFileSync(filePath, 'utf-8').split('\n');
@@ -479,14 +480,101 @@ export function removeLastFromListOfPrediction(list) {
       }
     }
   }
-  let justLastNumbers = lastNumbers.slice(-7);
+  let justLastNumbers = lastNumbers.slice(-10);
   list = list.map(Number); // Konvertujte sve brojeve iz stringova u brojeve
   list = list.filter((broj) => !justLastNumbers.includes(broj));
+  console.log(list.map(Number).sort((a, b) => a - b), 'brojevi od kojih uzimam 6')
+  
+
+  const listNumbers = list.map(Number).sort((a, b) => a - b);
+  const listaZaUporedjivanjeNumbers = listaZaUporedjivanje.map(Number).sort((a, b) => a - b);
+
+  const zajednickiBrojevi = listNumbers.filter((broj) => listaZaUporedjivanjeNumbers.includes(broj));
+
+  // Logovanje zajedničkih brojeva
+  console.log(zajednickiBrojevi, 'Zajednički brojevi');
+  const randomSix = getRandomNumbers(zajednickiBrojevi,6)
+  console.log(randomSix, '6 iz liste Random')
+
+
   // Vraćanje samo prvih 6 brojeva
   list = list.slice(0, 6);
 
-  return list;
+  return {
+    list: list.slice(0, 6),
+    randomSix: randomSix,
+  }
 }
 
+
+export function allWithIncrisedIndex(putanja){
+  const sadrzaj = fs.readFileSync(putanja, 'utf-8');
+  const linije = sadrzaj.split('\n').filter(line => line.trim().length > 0);
+  
+  const poslednjaDva = linije.slice(-2); // Poslednja dva reda
+
+  const prviRed = poslednjaDva[0].match(/\[(.*)\]/)[1].split(',').map(Number);
+  const drugiRed = poslednjaDva[1].match(/\[(.*)\]/)[1].split(',').map(Number);
+
+  const brojevi = [];
+
+  prviRed.forEach((num, index) => {
+      if (index > 0) {
+          const prviIndeks = prviRed.indexOf(num);
+          const drugiIndeks = drugiRed.indexOf(num);
+
+          if (
+              (prviIndeks < drugiIndeks && prviIndeks > index) ||
+              (drugiIndeks < prviIndeks && drugiIndeks < index)
+          ) {
+              brojevi.push(num);
+          }
+      }
+  });
+
+  return brojevi;
+  // const sadrzaj = fs.readFileSync(putanja, 'utf-8');
+  // const linije = sadrzaj.split('\n').filter(line => line.trim().length > 0);
+
+  // const poslednjaTri = linije.slice(-3); // Poslednja tri reda
+
+  // const prviRed = poslednjaTri[0].match(/\[(.*)\]/)[1].split(',').map(Number);
+  // const drugiRed = poslednjaTri[1].match(/\[(.*)\]/)[1].split(',').map(Number);
+  // const treciRed = poslednjaTri[2].match(/\[(.*)\]/)[1].split(',').map(Number);
+
+  // const brojevi = [];
+
+  // prviRed.forEach((num, index) => {
+  //     if (index > 0) {
+  //         const prviIndeks = prviRed.indexOf(num);
+  //         const drugiIndeks = drugiRed.indexOf(num);
+  //         const treciIndeks = treciRed.indexOf(num);
+  //         console.log(prviIndeks,drugiIndeks,treciIndeks, num)
+
+  //         // Provera da li se indeks povećao u odnosu na sve prethodne redove
+  //         if (drugiIndeks < prviIndeks && treciIndeks < drugiIndeks) {
+  //             brojevi.push(num);
+  //         }
+  //     }
+  // });
+
+ // return brojevi;
+}
+
+function getRandomNumbers(list, count) {
+  if (count > list.length) {
+    console.log("Traženi broj je veći od dužine liste.");
+    return list;
+  }
+
+  const shuffledList = [...list]; // Kopira listu kako biste sačuvali originalni redosled
+  for (let i = shuffledList.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledList[i], shuffledList[j]] = [shuffledList[j], shuffledList[i]]; // Zamena elemenata radi mešanja
+  }
+
+  const randomNumbers = shuffledList.slice(0, count);
+  return randomNumbers;
+}
 
 

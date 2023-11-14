@@ -62,7 +62,7 @@ export async function izvuciBrojeveIzFajla(putanjaDoFajla, brojIndexa) {
         numberCounts.sort((a, b) => b.count - a.count);
 
         const numbersOnly = numberCounts.map((entry) => entry.number);
-        const formattedData = numbersOnly.slice(0, 10).join(',');
+        const formattedData = numbersOnly.slice(0, 40).join(',');
         const indexOfNumbers = formattedData.split(',').map(Number);
         // 
         // console.log(brojevi)
