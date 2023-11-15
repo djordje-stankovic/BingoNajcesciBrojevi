@@ -246,21 +246,22 @@ let brojlopticaKojiSeNajviseJAvljaju = 20;
   // console.log("Rezultat:", rezultat);
   console.log(randomSix.map(Number).sort((a, b) => a - b),'random 6 iz liste izlazecih')
     console.log(listaNajcesceIzaslihBezNajredjeIzvucenihZaDanas.map(Number).sort((a, b) => a - b),'Koji  bi cesce trebalo da izadju')
-    PlayCombination(randomSix);
+    
+    // PlayCombination(randomSix);
   
   setTimeout(() => {
-      checkMoneyStatusFor6NumbernextGame(listaNajcesceIzaslihBezNajredjeIzvucenihZaDanas.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/14-11Pracenje.txt');
+      checkMoneyStatusFor6NumbernextGame(listaNajcesceIzaslihBezNajredjeIzvucenihZaDanas.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/15-11Pracenje.txt');
       
       if(randomSix.length = 6){
-        checkMoneyStatusFor6NumbernextGame(randomSix.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/14-11PracenjeRandomSix.txt');
+        checkMoneyStatusFor6NumbernextGame(randomSix.map(Number).sort((a, b) => a - b),'D:/Djordje.stankovic/BingoNajcesciBrojevi/txtFajls/15-11PracenjeRandomSix.txt');
 
       }
      
       const git = simpleGit();
      (async () => {
          try {
-            await git.add('txtFajls/14-11PracenjeRandomSix.txt');
-            await git.add('txtFajls/14-11Pracenje.txt');
+            await git.add('txtFajls/15-11PracenjeRandomSix.txt');
+            await git.add('txtFajls/15-11Pracenje.txt');
            await git.commit('dodataPartija');
            await git.push();
            console.log('Dodao na git');

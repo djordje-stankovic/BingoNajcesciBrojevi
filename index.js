@@ -19,7 +19,7 @@ export async function PlayCombination(selectedNumbers) {
 
     try {
       await page.goto('https://www.mozzartbet.com/sr#/lucky-six', { timeout: 50000 });
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(1000);
 
       // Tvoja postojeća logika za klikanje na brojeve
       try {
@@ -32,9 +32,65 @@ export async function PlayCombination(selectedNumbers) {
 
         // Kliknite na dugme "Allow"
         await page.click('#onesignal-slidedown-cancel-button');
-
-        // Sačekajte da se izvrše eventualne promene nakon klika (npr. da se zatvori dijalog)
         await page.waitForTimeout(2000);
+
+        const headerSelector = '#pageWrapper > div > header';
+        const header = await page.$(headerSelector);
+        console.log(header, 'header')
+        if (header) {
+          const articlesSelector = 'section > article';
+          const allArticles = await header.$$(articlesSelector);
+        
+          // Proverite da li postoji barem jedan article element
+          if (allArticles.length > 0) {
+            const lastArticle = allArticles[allArticles.length - 1];
+            console.log(lastArticle, 'last Ar');
+          
+            // Sačekajte 2 sekunde da se elementi učitaju
+            await page.waitForTimeout(1000);
+          
+            // Pronađite formu unutar poslednjeg article elementa koristeći relativni selektor
+            const formElementSelector = 'section.user-nav.logged-out form.new-login-form';
+const formElement = await page.$(formElementSelector);
+
+          
+            if (formElement) {
+              console.log('Forma nadjena ')
+              const loginButtonSelector = 'a.login-btn.new-version';
+                  const loginButton = await formElement.$(loginButtonSelector);
+
+                  if (loginButton) {
+                    // Kliknite na gumb za prijavu
+                    await loginButton.click();
+                    console.log('Kliknuto na gumb za prijavu.');
+                  } else {
+                    console.log(`Element sa selektorom ${loginButtonSelector} nije pronađen unutar forme.`);
+                  }
+              
+              // const loginLinkSelector = 'a.login-btn.new-version';
+              // const loginLink = await formElement.$(loginLinkSelector);
+          
+              // if (loginLink) {
+              //   await loginLink.click();
+              //   console.log('Kliknuto na link za prijavu.');
+              // } else {
+              //   console.log(`Element sa selektorom ${loginLinkSelector} nije pronađen unutar forme.`);
+              // }
+              // Ovde možete nastaviti sa tvojim kodom za rad sa formom
+            } else {
+              console.log(`Element sa selektorom ${formElementSelector} nije pronađen unutar poslednjeg article elementa.`);
+            }
+          } else {
+            console.log(`Nijedan element sa selektorom ${articlesSelector} nije pronađen unutar header-a.`);
+          }
+          
+          
+        } else {
+          console.log('Element #pageWrapper > div > header nije pronađen.');
+        }
+
+     
+      
 
         // Pronađi sve brojeve unutar .numbers-wrapper i klikni na one koji se nalaze u listi selectedNumbers
         const numbersSelector = '.numbers-wrapper .number';
